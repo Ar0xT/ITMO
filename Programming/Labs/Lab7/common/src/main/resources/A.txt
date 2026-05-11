@@ -1,0 +1,14 @@
+
+insert test1
+Test Band Alpha
+10.5
+20
+4
+27
+2020-01-01
+BRIT_POP
+Alpha Studio
+
+show
+save
+execute_script B.txt
