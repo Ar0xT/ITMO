@@ -6,8 +6,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.example</groupId>
-        <artifactId>lab6-parent</artifactId>
+        <groupId>ru.ifmo.se</groupId>
+        <artifactId>Lab7</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>

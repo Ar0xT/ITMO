@@ -1,7 +1,7 @@
 package server.utilities;
 
 import common.network.AuthCredentials;
-import server.utilities.db.UserRepository;
+import server.utilities.db.repository.UserRepository;
 
 import java.sql.SQLException;
 
