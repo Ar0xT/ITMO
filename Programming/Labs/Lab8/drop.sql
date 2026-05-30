@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS music_bands;
+DROP TABLE IF EXISTS studios;
+DROP TABLE IF EXISTS users;
+

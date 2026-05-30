@@ -1,0 +1,14 @@
+
+clear
+insert test2
+Test Band Beta
+15.5
+25
+5
+30
+2021-02-02
+HIP_HOP
+Beta Studio
+
+show
+execute_script A.txt
