@@ -86,7 +86,7 @@
                             <shadedArtifactAttached>false</shadedArtifactAttached>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>client.app.ClientMain</mainClass>
+                                    <mainClass>client.app.JavaFxLauncher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

@@ -44,13 +44,7 @@ public class PersistenceContext {
         return collectionManager;
     }
 
-    public MusicBand getBandById(long id) {
-        return collectionManager.getBandById(id);
-    }
 
-    public boolean containsKey(String key) {
-        return collectionManager.containsKey(key);
-    }
 
     public void insert(String key, MusicBand sourceBand, String owner) {
         if (collectionManager.containsKey(key)) {

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane fx:id="root" stylesheets="@/css/login.css" styleClass="root"
+           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="client.ui.LoginController">
+    <children>
+        <Pane prefWidth="1024" prefHeight="768" styleClass="background-layer">
+            <children>
+                <Circle radius="240" layoutX="120" layoutY="120" styleClass="bg-blob bg-blob-blue" />
+                <Circle radius="260" layoutX="920" layoutY="700" styleClass="bg-blob bg-blob-indigo" />
+            </children>
+        </Pane>
+
+        <AnchorPane prefWidth="1024" prefHeight="768" pickOnBounds="false">
+            <children>
+                <HBox spacing="6" styleClass="theme-toggle" AnchorPane.topAnchor="24" AnchorPane.rightAnchor="24">
+                    <children>
+                        <ToggleButton fx:id="themeLightButton" text="Light" styleClass="theme-button" />
+                        <ToggleButton fx:id="themeSystemButton" text="System" styleClass="theme-button" />
+                        <ToggleButton fx:id="themeDarkButton" text="Dark" styleClass="theme-button" />
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+
+        <VBox alignment="CENTER" spacing="16" maxWidth="420" styleClass="glass-card">
+            <padding>
+                <Insets top="32" right="32" bottom="28" left="32" />
+            </padding>
+
+            <StackPane prefWidth="64" prefHeight="64" styleClass="logo-badge">
+                <children>
+                    <Label text="BM" styleClass="logo-icon" />
+                </children>
+            </StackPane>
+
+            <Label fx:id="titleLabel" text="Enter Platform" styleClass="title-label" />
+
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <javafx.scene.layout.ColumnConstraints percentWidth="100" />
+                </columnConstraints>
+                <rowConstraints>
+                    <javafx.scene.layout.RowConstraints />
+                    <javafx.scene.layout.RowConstraints />
+                    <javafx.scene.layout.RowConstraints />
+                    <javafx.scene.layout.RowConstraints />
+                </rowConstraints>
+
+                <Label fx:id="usernameLabel" text="Username" GridPane.rowIndex="0" styleClass="field-label" />
+                <TextField fx:id="usernameField" promptText="e.g. admin" GridPane.rowIndex="1" styleClass="field" />
+
+                <Label fx:id="passwordLabel" text="Password" GridPane.rowIndex="2" styleClass="field-label" />
+                <PasswordField fx:id="passwordField" promptText="********" GridPane.rowIndex="3" styleClass="field" />
+            </GridPane>
+
+            <HBox spacing="12" alignment="CENTER">
+                <Button fx:id="loginButton" text="Login" styleClass="primary-button" />
+                <Button fx:id="registerButton" text="Register" styleClass="secondary-button" />
+            </HBox>
+
+            <Label fx:id="statusLabel" text="" styleClass="status-label" />
+
+            <HBox spacing="6" alignment="CENTER" styleClass="lang-row">
+                <Button fx:id="langEnButton" text="EN" styleClass="lang-button" />
+                <Button fx:id="langRuButton" text="RU" styleClass="lang-button" />
+                <Button fx:id="langTrButton" text="TR" styleClass="lang-button" />
+                <Button fx:id="langHrButton" text="HR" styleClass="lang-button" />
+                <Button fx:id="langEsEcButton" text="ES" styleClass="lang-button" />
+            </HBox>
+        </VBox>
+    </children>
+</StackPane>
+
