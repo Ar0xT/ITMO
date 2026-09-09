@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebProgramming-Lab1</title>
+</head>
+
+<body>
+    <header id="header">
+        <h1>Web-programming, Laboratory work №1, Variant 12710</h1>
+        <h2>Tserendorj Ariunbat, P3213</h2>
+    </header>
+
+    <form id="pointForm">
+        <div>
+            <p>Pick X</p>
+            <input type="radio" id="x-neg2" name="x" value="-2">
+            <label for="x-neg2">-2</label>
+
+            <input type="radio" id="x-neg1_5" name="x" value="-1.5">
+            <label for="x-neg1_5">-1.5</label>
+
+            <input type="radio" id="x-neg1" name="x" value="-1">
+            <label for="x-neg1">-1</label>
+
+            <input type="radio" id="x-neg0_5" name="x" value="-0.5">
+            <label for="x-neg0_5">-0.5</label>
+
+            <input type="radio" id="x-0" name="x" value="0">
+            <label for="x-0">0</label>
+
+            <input type="radio" id="x-0_5" name="x" value="0.5">
+            <label for="x-0_5">0.5</label>
+
+            <input type="radio" id="x-1" name="x" value="1">
+            <label for="x-1">1</label>
+
+            <input type="radio" id="x-1_5" name="x" value="1.5">
+            <label for="x-1_5">1.5</label>
+
+            <input type="radio" id="x-2" name="x" value="2">
+            <label for="x-2">2</label>
+
+        </div>
+        
+
+        <div>
+            <label for="y">Enter y</label>
+            <input type="text" id="y" name="y" placeholder="[-3; 3]">
+        </div>
+
+
+        <div>
+            <label for="r">Pick R</label>
+            <select id="r" name="r" >
+                <option value="" disabled selected hidden></option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+
+        <button type="reset">Clear</button>
+        <button id="submit_button" type="submit">Submit</button>
+        
+    </form>
+    <p id="error"></p>
+
+    <table id="results">
+        <tr>
+            <th>X</th>
+            <th>Y</th>
+            <th>R</th>
+            <th>Result</th>
+            <th>Date</th>
+        </tr>
+    </table>
+    <script src="script.js"></script>
+</body>
+
+</html>
+
