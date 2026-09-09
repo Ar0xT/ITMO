@@ -23,7 +23,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class PersistenceContext {
     private final BandRepository bandRepository;
-    private final StudioRepository studioRepository;
     private final CollectionManager collectionManager;
     private final DatabaseClientProxy dbProxy;
 
@@ -37,7 +36,6 @@ public class PersistenceContext {
                               CollectionManager collectionManager,
                               DatabaseClientProxy dbProxy) {
         this.bandRepository = bandRepository;
-        this.studioRepository = studioRepository;
         this.collectionManager = collectionManager;
         this.dbProxy = dbProxy;
     }
@@ -46,13 +44,6 @@ public class PersistenceContext {
         return collectionManager;
     }
 
-    public MusicBand getBandById(long id) {
-        return collectionManager.getBandById(id);
-    }
-
-    public boolean containsKey(String key) {
-        return collectionManager.containsKey(key);
-    }
 
     public void insert(String key, MusicBand sourceBand, String owner) {
         if (collectionManager.containsKey(key)) {

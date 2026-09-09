@@ -2,7 +2,9 @@ package client;
 
 import common.network.CommandMeta;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ClientCommandRegistry {
@@ -27,6 +29,15 @@ public class ClientCommandRegistry {
 
     public CommandMeta get(String commandName) {
         return commands.get(commandName);
+    }
+
+    public List<CommandMeta> exportPublicCommandMeta() {
+        List<CommandMeta> list = new ArrayList<>();
+        commands.forEach((name, meta) -> {
+            if (name == null || name.startsWith("__")) return;
+            list.add(new CommandMeta(meta.usage(), meta.description(), meta.requiresArgument(), meta.requiresBand()));
+        });
+        return list;
     }
 
     public String buildHelpText() {

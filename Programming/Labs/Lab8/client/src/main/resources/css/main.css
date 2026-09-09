@@ -1,0 +1,1270 @@
+/* ============================================================
+   BandManager — Main View
+   Modern, sleek, two-theme design with smooth transitions.
+   Light + Dark share token names so the two palettes feel
+   like the same product.  Hover/press animations on every
+   interactive element.
+   ============================================================ */
+
+/* ---------- Base tokens (light) ---------- */
+.root, .root-paint {
+    -fx-font-family: "Inter", "SF Pro Display", "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f4f4f6;
+    -fx-text-fill: #15171c;
+
+    /* surfaces */
+    -bg-app: #f4f4f6;
+    -bg-app-2: #ebebef;
+    -bg-card: #ffffff;
+    -bg-card-2: #fbfbfd;
+    -bg-card-hover: #f7f7fa;
+    -bg-elevated: #ffffff;
+    -bg-subtle: rgba(15, 23, 42, 0.045);
+    -bg-overlay: rgba(255, 255, 255, 0.82);
+
+    /* borders */
+    -border: rgba(15, 23, 42, 0.08);
+    -border-strong: rgba(15, 23, 42, 0.14);
+    -border-focus: #2563eb;
+
+    /* text */
+    -text-primary: #15171c;
+    -text-secondary: #5b6472;
+    -text-tertiary: #8d96a6;
+    -text-on-accent: #ffffff;
+
+    /* accents */
+    -accent: #2563eb;
+    -accent-hover: #1d4ed8;
+    -accent-2: #7c3aed;
+    -accent-soft: rgba(37, 99, 235, 0.10);
+    -success: #16a34a;
+    -success-soft: rgba(22, 163, 74, 0.10);
+    -danger: #dc2626;
+    -danger-hover: #b91c1c;
+    -danger-soft: rgba(220, 38, 38, 0.10);
+    -warning: #ea580c;
+    -warning-soft: rgba(234, 88, 12, 0.10);
+
+    /* shadow */
+    -shadow-1: dropshadow(gaussian, rgba(15, 23, 42, 0.06), 12, 0, 0, 2);
+    -shadow-2: dropshadow(gaussian, rgba(15, 23, 42, 0.10), 24, 0, 0, 6);
+    -shadow-focus: dropshadow(gaussian, rgba(37, 99, 235, 0.30), 10, 0, 0, 0);
+}
+
+/* ---------- Base tokens (dark) ---------- */
+.root.theme-dark, .root-paint.theme-dark {
+    -fx-background-color: #0b0d12;
+    -fx-background: #0b0d12;
+    -fx-base: #0b0d12;
+    -fx-text-fill: #e8eaf0;
+
+    -bg-app: #0b0d12;
+    -bg-app-2: #11141b;
+    -bg-card: #161a23;
+    -bg-card-2: #1c2030;
+    -bg-card-hover: #20253a;
+    -bg-elevated: #1a1e2a;
+    -bg-subtle: rgba(255, 255, 255, 0.05);
+    -bg-overlay: rgba(11, 13, 18, 0.78);
+
+    -border: rgba(255, 255, 255, 0.08);
+    -border-strong: rgba(255, 255, 255, 0.18);
+    -border-focus: #60a5fa;
+
+    -text-primary: #f1f3f8;
+    -text-secondary: #a8b0c2;
+    -text-tertiary: #6c7689;
+    -text-on-accent: #ffffff;
+
+    -accent: #60a5fa;
+    -accent-hover: #93c5fd;
+    -accent-2: #a78bfa;
+    -accent-soft: rgba(96, 165, 250, 0.16);
+    -success: #4ade80;
+    -success-soft: rgba(74, 222, 128, 0.14);
+    -danger: #f87171;
+    -danger-hover: #fca5a5;
+    -danger-soft: rgba(248, 113, 113, 0.14);
+    -warning: #fbbf24;
+    -warning-soft: rgba(251, 191, 36, 0.14);
+
+    -shadow-1: dropshadow(gaussian, rgba(0, 0, 0, 0.40), 16, 0, 0, 3);
+    -shadow-2: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 32, 0, 0, 10);
+    -shadow-focus: dropshadow(gaussian, rgba(96, 165, 250, 0.50), 12, 0, 0, 0);
+}
+
+/* ---------- (light + dark modes) ---------- */
+
+/*
+   UNIVERSAL ANIMATIONS
+ */
+* {
+    -fx-transition: -fx-background-color 160ms ease, -fx-text-fill 160ms ease,
+                    -fx-border-color 160ms ease, -fx-effect 200ms ease;
+}
+
+/*
+   LAYOUT
+   */
+.center-split-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0 18 18 18;
+    -fx-box-border: transparent;
+}
+
+.center-split-pane > .split-pane-divider {
+    /* the divider which I got stuck on for ungodly amount of time*/
+    -fx-background-color: -bg-app;
+    -fx-border-color: transparent;
+    -fx-pref-width: 10;
+    -fx-cursor: h-resize;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.center-split-pane > .split-pane-divider:hover {
+    -fx-background-color: -accent-soft;
+}
+
+.table-area, .viz-area {
+    -fx-background-color: transparent;
+}
+
+.table-container, .viz-container {
+    -fx-spacing: 14;
+}
+
+.table-header, .viz-header {
+    -fx-spacing: 12;
+    -fx-alignment: center-left;
+    -fx-padding: 4 4 4 4;
+}
+
+.table-title, .viz-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-text-fill: -text-primary;
+    -fx-letter-spacing: -0.3px;
+}
+
+.viz-icon {
+    -fx-fill: -accent;
+    -fx-effect: dropshadow(gaussian, -accent, 8, 0.45, 0, 0);
+}
+
+/*
+   FILTER FIELD
+*/
+.filter-field {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 12;
+    -fx-border-color: -border;
+    -fx-border-radius: 12;
+    -fx-padding: 9 16 9 16;
+    -fx-prompt-text-fill: -text-tertiary;
+    -fx-text-fill: -text-primary;
+    -fx-pref-height: 38;
+    -fx-effect: -shadow-1;
+    -fx-font-size: 13px;
+}
+
+.filter-field:focused {
+    -fx-border-color: -border-focus;
+    -fx-effect: -shadow-focus;
+    -fx-background-color: -bg-elevated;
+}
+
+/*
+   TABLE
+   */
+.table-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.table-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.band-table {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 16;
+    -fx-border-color: -border;
+    -fx-border-radius: 16;
+    -fx-effect: -shadow-1;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 4;
+}
+
+.band-table .column-header-background {
+    -fx-background-color: transparent;
+    -fx-background-radius: 14 14 0 0;
+    -fx-padding: 6 0 8 0;
+}
+
+.band-table .column-header,
+.band-table .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-size: 40px;
+}
+
+.band-table .column-header .label {
+    -fx-font-weight: 700;
+    -fx-text-fill: -text-tertiary;
+    -fx-padding: 0 14 0 14;
+    -fx-font-size: 11px;
+    -fx-alignment: center-left;
+    -fx-text-transform: uppercase;
+    -fx-letter-spacing: 0.6px;
+}
+
+.band-table .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -border transparent;
+    -fx-cell-size: 48px;
+}
+
+.band-table .table-row-cell:hover {
+    -fx-background-color: -bg-subtle;
+}
+
+.band-table .table-row-cell:selected {
+    -fx-background-color: -accent-soft;
+}
+
+.band-table .table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -text-primary;
+    -fx-alignment: center-left;
+    -fx-padding: 0 14 0 14;
+    -fx-font-size: 13px;
+}
+
+.band-table .table-cell.id-cell {
+    -fx-text-fill: -text-tertiary;
+    -fx-font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    -fx-font-size: 12px;
+}
+
+.band-table .table-cell.coord-cell {
+    -fx-text-fill: -text-secondary;
+    -fx-font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    -fx-font-size: 12px;
+}
+
+.band-table .table-cell.date-cell {
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 12px;
+}
+
+.band-table .table-cell.name-cell .name-with-color {
+    -fx-spacing: 12;
+    -fx-alignment: center-left;
+}
+
+.band-table .table-cell.name-cell .color-dot {
+    -fx-min-width: 12;
+    -fx-min-height: 12;
+    -fx-max-width: 12;
+    -fx-max-height: 12;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.20), 6, 0, 0, 1);
+}
+
+.band-table .table-cell.name-cell .name-label {
+    -fx-text-fill: -text-primary;
+    -fx-font-weight: 600;
+    -fx-font-size: 13px;
+}
+
+.band-table .table-cell.owner-cell .owner-badge {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 8;
+    -fx-padding: 3 10 3 10;
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-alignment: center;
+}
+
+.band-table .table-cell.owner-cell .owner-badge.owner-self {
+    -fx-background-color: -accent-soft;
+    -fx-text-fill: -accent;
+}
+
+.band-table .table-cell.actions-cell {
+    -fx-alignment: center-right;
+    -fx-padding: 0 12 0 12;
+}
+
+.band-table .table-cell.actions-cell .actions-box {
+    -fx-spacing: 4;
+    -fx-alignment: center-right;
+}
+
+.band-table .table-cell.actions-cell .action-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-text-fill: -text-secondary;
+    -fx-padding: 4 8 4 8;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-min-width: 28;
+    -fx-min-height: 28;
+    -fx-border-color: transparent;
+    -fx-transition: -fx-background-color 140ms ease, -fx-text-fill 140ms ease;
+}
+
+.band-table .table-cell.actions-cell .action-button:hover {
+    -fx-background-color: -accent-soft;
+    -fx-text-fill: -accent;
+    -fx-scale-x: 1.06;
+    -fx-scale-y: 1.06;
+}
+
+.band-table .table-cell.actions-cell .action-button.delete-action:hover {
+    -fx-background-color: -danger-soft;
+    -fx-text-fill: -danger;
+}
+
+.band-table .empty-row {
+    -fx-background-color: transparent;
+}
+
+.band-table .empty-row .table-cell {
+    -fx-text-fill: -text-tertiary;
+    -fx-alignment: center;
+    -fx-padding: 80 0 80 0;
+    -fx-font-size: 13px;
+}
+
+.band-table .placeholder .label,
+.empty-state {
+    -fx-text-fill: -text-tertiary;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-alignment: center;
+}
+
+.band-table .placeholder {
+    -fx-background-color: transparent;
+    -fx-padding: 60 0 60 0;
+}
+
+/*
+   VISUALIZATION
+   */
+.viz-stack-pane {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 16;
+    -fx-border-color: -border;
+    -fx-border-radius: 16;
+    -fx-effect: -shadow-1;
+    -fx-padding: 0;
+    -fx-min-height: 320;
+}
+
+.visualization-canvas {
+    -fx-cursor: crosshair;
+}
+
+/*
+   DETAILS POPUP
+  */
+.details-popup {
+    -fx-background-color: -bg-elevated;
+    -fx-background-radius: 14;
+    -fx-border-color: -border;
+    -fx-border-radius: 14;
+    -fx-effect: -shadow-2;
+    -fx-padding: 18;
+    -fx-spacing: 10;
+    -fx-min-width: 280;
+    -fx-max-width: 340;
+}
+
+.details-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 0 0 6 0;
+    -fx-letter-spacing: -0.2px;
+}
+
+.details-content {
+    -fx-spacing: 4;
+}
+
+.details-row {
+    -fx-spacing: 12;
+    -fx-alignment: center-left;
+    -fx-padding: 5 0 5 0;
+}
+
+.details-row .detail-label {
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-min-width: 100;
+    -fx-pref-width: 110;
+}
+
+.details-row .detail-value {
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+
+.details-row .detail-value.value-mono {
+    -fx-font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: -text-secondary;
+}
+
+.details-row .owner-color-dot {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 6, 0, 0, 1);
+}
+
+.details-actions {
+    -fx-padding: 8 0 0 0;
+    -fx-spacing: 8;
+    -fx-alignment: center-right;
+}
+
+.details-action-button {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 8;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-border-color: transparent;
+    -fx-min-height: 30;
+    -fx-transition: -fx-background-color 140ms ease, -fx-text-fill 140ms ease;
+}
+
+.details-action-button:hover {
+    -fx-background-color: -border-strong;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+.details-action-button.edit-action:hover {
+    -fx-background-color: -accent-soft;
+    -fx-text-fill: -accent;
+}
+
+.details-action-button.delete-action {
+    -fx-background-color: -danger-soft;
+    -fx-text-fill: -danger;
+}
+
+.details-action-button.delete-action:hover {
+    -fx-background-color: -danger;
+    -fx-text-fill: -text-on-accent;
+}
+
+/*
+   TOASTS — floating notifications
+ */
+.toast {
+    -fx-background-color: -bg-elevated;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: -border;
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-padding: 12 18 12 18;
+    -fx-max-width: 360;
+    -fx-min-width: 200;
+    -fx-effect: -shadow-2;
+    -fx-cursor: hand;
+}
+
+.toast-pane {
+    -fx-padding: 0 20 20 0;
+    -fx-spacing: 10;
+    -fx-alignment: BOTTOM_RIGHT;
+    -fx-max-width: 380;
+}
+
+.toast.toast-info {
+    -fx-border-color: -accent;
+    -fx-border-width: 0 0 0 4;
+}
+
+.toast.toast-success {
+    -fx-border-color: -success;
+    -fx-border-width: 0 0 0 4;
+    -fx-text-fill: -text-primary;
+}
+
+.toast.toast-warning {
+    -fx-border-color: -warning;
+    -fx-border-width: 0 0 0 4;
+    -fx-text-fill: -text-primary;
+}
+
+.toast.toast-error {
+    -fx-border-color: -danger;
+    -fx-border-width: 0 0 0 4;
+    -fx-text-fill: -text-primary;
+}
+
+.toast:hover {
+    -fx-effect: -shadow-2;
+    -fx-translate-x: -3;
+}
+
+/* ============================================================
+   CONNECTION INDICATOR
+   ============================================================ */
+.connection-indicator {
+    -fx-spacing: 6;
+    -fx-alignment: center-left;
+    -fx-background-radius: 20;
+    -fx-padding: 6 14 6 14;
+    -fx-border-color: transparent;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-letter-spacing: 0.2px;
+}
+
+.connection-indicator.connected    { -fx-background-color: -success-soft; -fx-text-fill: -success; }
+.connection-indicator.connecting   { -fx-background-color: -warning-soft; -fx-text-fill: -warning; }
+.connection-indicator.disconnected { -fx-background-color: -danger-soft;  -fx-text-fill: -danger; }
+
+.connection-pulse {
+    -fx-min-radius: 4;
+    -fx-max-radius: 4;
+}
+
+.connection-indicator.connected .connection-pulse    { -fx-fill: -success; -fx-effect: dropshadow(gaussian, -success, 8, 0.5, 0, 0); }
+.connection-indicator.connecting .connection-pulse   { -fx-fill: -warning; -fx-effect: dropshadow(gaussian, -warning, 8, 0.5, 0, 0); }
+.connection-indicator.disconnected .connection-pulse { -fx-fill: -danger;  -fx-effect: dropshadow(gaussian, -danger,  8, 0.5, 0, 0); }
+
+/*
+   SCROLLBARS
+ */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+    -fx-padding: 2;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-height: 10;
+    -fx-padding: 2;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: rgba(15, 23, 42, 0.20);
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: rgba(15, 23, 42, 0.35);
+}
+
+.root.theme-dark .scroll-bar .thumb { -fx-background-color: rgba(255, 255, 255, 0.20); }
+.root.theme-dark .scroll-bar .thumb:hover { -fx-background-color: rgba(255, 255, 255, 0.32); }
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/*
+   SIDEBAR
+*/
+.sidebar-pane {
+    -fx-background-color: -bg-card;
+    -fx-padding: 22 18 22 18;
+    -fx-spacing: 18;
+    -fx-border-color: transparent -border transparent transparent;
+    -fx-border-width: 0 1 0 0;
+    -fx-min-width: 250;
+    -fx-pref-width: 270;
+}
+
+.sidebar-logo-icon {
+    -fx-fill: -accent;
+    -fx-font-size: 18px;
+}
+
+.sidebar-brand {
+    -fx-font-size: 17px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -text-primary;
+    -fx-letter-spacing: -0.4px;
+    -fx-background-color: linear-gradient(to right, -accent, -accent-2);
+    -fx-background-clip: text;
+}
+
+.user-card {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 14;
+    -fx-padding: 14;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-border-color: -border;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+}
+
+.user-avatar-icon {
+    -fx-font-size: 16px;
+}
+
+.user-welcome {
+    -fx-text-fill: -text-tertiary;
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+    -fx-text-transform: uppercase;
+    -fx-letter-spacing: 0.6px;
+}
+
+.user-name {
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+}
+
+.nav-item-active {
+    -fx-background-color: -accent-soft;
+    -fx-background-radius: 10;
+    -fx-padding: 10 12 10 12;
+    -fx-cursor: hand;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-border-color: transparent;
+    -fx-transition: -fx-background-color 160ms ease, -fx-scale-x 160ms ease, -fx-scale-y 160ms ease;
+}
+
+.nav-item-active:hover {
+    -fx-background-color: -accent;
+    -fx-text-fill: -text-on-accent;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.nav-item-active:hover .nav-label {
+    -fx-text-fill: -text-on-accent;
+}
+
+.nav-label {
+    -fx-text-fill: -accent;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.lang-header {
+    -fx-text-fill: -text-tertiary;
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+    -fx-text-transform: uppercase;
+    -fx-letter-spacing: 0.8px;
+    -fx-padding: 0 0 6 0;
+}
+
+.lang-button {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 8;
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-padding: 6 10 6 10;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-min-width: 36;
+    -fx-transition: -fx-background-color 160ms ease, -fx-text-fill 160ms ease;
+}
+
+.lang-button:hover {
+    -fx-background-color: -border-strong;
+    -fx-text-fill: -text-primary;
+}
+
+.lang-button:selected,
+.lang-button.lang-selected {
+    -fx-background-color: -accent;
+    -fx-text-fill: -text-on-accent;
+}
+
+.logout-button {
+    -fx-background-color: -danger-soft;
+    -fx-background-radius: 10;
+    -fx-text-fill: -danger;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 10 14 10 14;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-transition: -fx-background-color 160ms ease, -fx-text-fill 160ms ease;
+}
+
+.logout-button:hover {
+    -fx-background-color: -danger;
+    -fx-text-fill: -text-on-accent;
+}
+
+.logout-icon {
+    -fx-fill: -danger;
+    -fx-font-size: 14px;
+}
+
+.logout-button:hover .logout-icon {
+    -fx-fill: -text-on-accent;
+}
+
+/*
+   TOP BAR
+*/
+.top-bar-pane {
+    -fx-background-color: -bg-app;
+    -fx-padding: 18 24 12 24;
+    -fx-spacing: 12;
+    -fx-alignment: center-left;
+}
+
+.sync-badge {
+    -fx-background-color: -success-soft;
+    -fx-background-radius: 20;
+    -fx-padding: 6 14 6 14;
+    -fx-spacing: 8;
+    -fx-alignment: center-left;
+    -fx-border-color: transparent;
+    -fx-transition: -fx-background-color 200ms ease;
+}
+
+.sync-badge.connected    { -fx-background-color: -success-soft; }
+.sync-badge.connecting   { -fx-background-color: -warning-soft; }
+.sync-badge.disconnected { -fx-background-color: -danger-soft; }
+
+.sync-pulse {
+    -fx-min-radius: 4;
+    -fx-max-radius: 4;
+}
+
+.sync-badge.connected .sync-pulse    { -fx-fill: -success; -fx-effect: dropshadow(gaussian, -success, 8, 0.5, 0, 0); }
+.sync-badge.connecting .sync-pulse   { -fx-fill: -warning; -fx-effect: dropshadow(gaussian, -warning, 8, 0.5, 0, 0); }
+.sync-badge.disconnected .sync-pulse { -fx-fill: -danger;  -fx-effect: dropshadow(gaussian, -danger,  8, 0.5, 0, 0); }
+
+.sync-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-letter-spacing: 0.2px;
+}
+
+.sync-badge.connected    .sync-label { -fx-text-fill: -success; }
+.sync-badge.connecting   .sync-label { -fx-text-fill: -warning; }
+.sync-badge.disconnected .sync-label { -fx-text-fill: -danger; }
+
+.add-button {
+    -fx-background-color: -accent;
+    -fx-background-radius: 12;
+    -fx-text-fill: -text-on-accent;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-padding: 9 18 9 18;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-spacing: 8;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, -accent, 14, 0.35, 0, 4);
+    -fx-transition: -fx-background-color 160ms ease, -fx-scale-x 160ms ease, -fx-scale-y 160ms ease;
+}
+
+.add-button:hover {
+    -fx-background-color: -accent-hover;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+.add-button:pressed {
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+    -fx-effect: dropshadow(gaussian, -accent, 6, 0.25, 0, 1);
+}
+
+.add-button-icon {
+    -fx-fill: -text-on-accent;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.add-button-label {
+    -fx-text-fill: -text-on-accent;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.commands-button {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 12;
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 9 16 9 16;
+    -fx-cursor: hand;
+    -fx-border-color: -border;
+    -fx-border-radius: 12;
+    -fx-spacing: 8;
+    -fx-alignment: center;
+    -fx-effect: -shadow-1;
+    -fx-transition: -fx-background-color 160ms ease, -fx-border-color 160ms ease, -fx-scale-x 160ms ease, -fx-scale-y 160ms ease;
+}
+
+.commands-button:hover {
+    -fx-background-color: -bg-card-hover;
+    -fx-border-color: -border-strong;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.commands-button:pressed {
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+}
+
+.commands-button-icon {
+    -fx-fill: -text-secondary;
+    -fx-font-size: 14px;
+}
+
+.commands-button-label {
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 13px;
+}
+
+/*
+   STATUS BAR
+*/
+.status-bar {
+    -fx-background-color: -bg-app;
+    -fx-padding: 0 24 10 24;
+    -fx-alignment: center-left;
+}
+
+.status-label {
+    -fx-text-fill: -text-tertiary;
+    -fx-font-size: 11px;
+    -fx-font-weight: 500;
+    -fx-padding: 5 14 5 14;
+    -fx-background-radius: 8;
+    -fx-background-color: -bg-subtle;
+    -fx-max-width: 1200;
+    -fx-wrap-text: false;
+    -fx-ellipsis-string: "…";
+}
+
+.status-label.status-info {
+    -fx-text-fill: -text-secondary;
+    -fx-background-color: -bg-subtle;
+}
+
+.status-label.status-success {
+    -fx-text-fill: -success;
+    -fx-background-color: -success-soft;
+    -fx-font-weight: 600;
+}
+
+.status-label.status-error {
+    -fx-text-fill: -danger;
+    -fx-background-color: -danger-soft;
+    -fx-font-weight: 600;
+}
+
+/*
+   COMMAND PALETTE
+*/
+.command-palette-row {
+    -fx-background-color: transparent;
+    -fx-padding: 12 16 12 16;
+    -fx-cursor: hand;
+    -fx-border-color: transparent transparent -border transparent;
+    -fx-transition: -fx-background-color 140ms ease;
+}
+
+.command-palette-row:hover {
+    -fx-background-color: -accent-soft;
+}
+
+.command-palette-row:selected {
+    -fx-background-color: -accent-soft;
+    -fx-text-fill: -accent;
+}
+
+/*
+   THEME TOGGLE
+*/
+.theme-toggle-pane {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 10;
+    -fx-padding: 3;
+    -fx-spacing: 2;
+    -fx-border-color: -border-strong;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-effect: -shadow-1;
+}
+
+.theme-toggle-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7;
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 14px;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-min-width: 32;
+    -fx-min-height: 28;
+    -fx-transition: -fx-background-color 160ms ease, -fx-text-fill 160ms ease;
+}
+
+.theme-toggle-button:hover {
+    -fx-background-color: -bg-subtle;
+}
+
+.theme-toggle-button:selected {
+    -fx-background-color: -accent;
+    -fx-text-fill: -text-on-accent;
+    -fx-effect: dropshadow(gaussian, -accent, 10, 0.35, 0, 2);
+}
+
+/*
+   DIALOGS (band edit + command palette share)
+*/
+.dialog-pane {
+    -fx-background-color: -bg-elevated;
+    -fx-border-color: -border;
+    -fx-border-radius: 18;
+    -fx-background-radius: 18;
+    -fx-effect: -shadow-2;
+    -fx-padding: 0;
+}
+
+.dialog-header {
+    -fx-padding: 22 22 12 22;
+    -fx-alignment: center-left;
+    -fx-spacing: 12;
+    -fx-border-color: transparent transparent -border transparent;
+}
+
+.dialog-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: 700;
+    -fx-text-fill: -text-primary;
+    -fx-letter-spacing: -0.3px;
+}
+
+.dialog-close-button {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 8;
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 13px;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-min-width: 28;
+    -fx-min-height: 28;
+    -fx-transition: -fx-background-color 140ms ease, -fx-text-fill 140ms ease;
+}
+
+.dialog-close-button:hover {
+    -fx-background-color: -danger-soft;
+    -fx-text-fill: -danger;
+}
+
+.dialog-content {
+    -fx-padding: 8 22 12 22;
+    -fx-spacing: 12;
+}
+
+.dialog-footer {
+    -fx-padding: 14 22 20 22;
+    -fx-spacing: 10;
+    -fx-alignment: center-right;
+    -fx-border-color: -border transparent transparent transparent;
+}
+
+.dialog-button-cancel {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 10;
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 9 18 9 18;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-min-height: 36;
+    -fx-transition: -fx-background-color 140ms ease;
+}
+
+.dialog-button-cancel:hover {
+    -fx-background-color: -border-strong;
+}
+
+.dialog-button-save {
+    -fx-background-color: -accent;
+    -fx-background-radius: 10;
+    -fx-text-fill: -text-on-accent;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-padding: 9 22 9 22;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-min-height: 36;
+    -fx-effect: dropshadow(gaussian, -accent, 12, 0.30, 0, 4);
+    -fx-transition: -fx-background-color 140ms ease, -fx-scale-x 140ms ease, -fx-scale-y 140ms ease;
+}
+
+.dialog-button-save:hover {
+    -fx-background-color: -accent-hover;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.dialog-button-save:pressed {
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+}
+
+.form-label {
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.form-field {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 10;
+    -fx-border-color: -border;
+    -fx-border-radius: 10;
+    -fx-padding: 9 14 9 14;
+    -fx-text-fill: -text-primary;
+    -fx-prompt-text-fill: -text-tertiary;
+    -fx-min-height: 36;
+    -fx-font-size: 13px;
+    -fx-effect: -shadow-1;
+}
+
+.form-field:focused {
+    -fx-border-color: -border-focus;
+    -fx-effect: -shadow-focus;
+}
+
+.form-error {
+    -fx-text-fill: -danger;
+    -fx-font-size: 12px;
+    -fx-padding: 4 0 0 0;
+    -fx-font-weight: 500;
+}
+
+/*
+   HELP DIALOG
+*/
+.help-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: -border;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.help-command-card {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 12;
+    -fx-padding: 12 14 12 14;
+    -fx-spacing: 5;
+    -fx-border-color: -border;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-transition: -fx-translate-y 160ms ease, -fx-effect 160ms ease;
+}
+
+.help-command-card:hover {
+    -fx-translate-y: -2;
+    -fx-effect: -shadow-1;
+}
+
+.help-command-name {
+    -fx-text-fill: -accent;
+    -fx-font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+
+.help-command-usage {
+    -fx-text-fill: -text-tertiary;
+    -fx-font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    -fx-font-size: 11px;
+    -fx-padding: 2 8 2 8;
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 6;
+}
+
+.help-command-desc {
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 12px;
+}
+
+/* ComboBox inner styling for the dialog form */
+.combo-box-base {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 10;
+    -fx-border-color: -border;
+    -fx-border-radius: 10;
+    -fx-padding: 4 12 4 12;
+    -fx-min-height: 36;
+    -fx-effect: -shadow-1;
+}
+
+.combo-box-base:hover {
+    -fx-border-color: -border-strong;
+}
+
+.combo-box-base:focused {
+    -fx-border-color: -border-focus;
+    -fx-effect: -shadow-focus;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 8 0 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: -text-tertiary;
+    -fx-shape: "M 0 0 L 6 6 L 12 0";
+    -fx-min-width: 8;
+    -fx-min-height: 6;
+    -fx-max-width: 8;
+    -fx-max-height: 6;
+    -fx-background-insets: 0;
+}
+
+.combo-box-base .list-view {
+    -fx-background-color: -bg-elevated;
+    -fx-border-color: -border;
+    -fx-effect: -shadow-2;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 8 14 8 14;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: -accent-soft;
+}
+
+.combo-box .list-cell:selected {
+    -fx-background-color: -accent-soft;
+    -fx-text-fill: -accent;
+}
+
+/* DatePicker */
+.date-picker > .text-field {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 10;
+    -fx-border-color: -border;
+    -fx-border-radius: 10;
+    -fx-padding: 9 14 9 14;
+    -fx-text-fill: -text-primary;
+    -fx-prompt-text-fill: -text-tertiary;
+    -fx-min-height: 36;
+    -fx-effect: -shadow-1;
+}
+
+.date-picker > .text-field:focused {
+    -fx-border-color: -border-focus;
+    -fx-effect: -shadow-focus;
+}
+
+/*
+   ALERT DIALOGS (Logout confirm etc.)
+*/
+.dialog-pane > .content.label {
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 13px;
+    -fx-padding: 12 0 4 0;
+}
+
+.dialog-pane > .header-panel {
+    -fx-background-color: -bg-elevated;
+    -fx-padding: 16 22 0 22;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-background-color: -bg-elevated;
+    -fx-padding: 14 22 18 22;
+}
+
+.dialog-pane .button {
+    -fx-background-color: -bg-subtle;
+    -fx-background-radius: 10;
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 8 18 8 18;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-min-height: 34;
+    -fx-transition: -fx-background-color 140ms ease;
+}
+
+.dialog-pane .button:hover {
+    -fx-background-color: -border-strong;
+}
+
+.dialog-pane .button:default {
+    -fx-background-color: -accent;
+    -fx-text-fill: -text-on-accent;
+    -fx-effect: dropshadow(gaussian, -accent, 10, 0.30, 0, 3);
+}
+
+.dialog-pane .button:default:hover {
+    -fx-background-color: -accent-hover;
+}
+
+/* Long result text area inside command-result dialog */
+.result-text-area {
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 10;
+    -fx-border-color: -border;
+    -fx-border-radius: 10;
+    -fx-text-fill: -text-primary;
+    -fx-font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    -fx-font-size: 12px;
+    -fx-padding: 10;
+}

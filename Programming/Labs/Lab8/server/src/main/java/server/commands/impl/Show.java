@@ -16,14 +16,14 @@ public class Show extends CommandWithoutArgs {
     @Override
     protected CommandResult executeInternal() {
         if (manager.size() == 0) {
-            return new CommandResult("The collection is empty", true);
+            return new CommandResult("The collection is empty", true, manager.getCollection());
         }
 
         String output = manager.getEntriesSortedByBandName().stream()
                 .map(entry -> "Key: " + entry.getKey() + "\n" + entry.getValue() + "\n" + "=".repeat(67))
                 .collect(Collectors.joining("\n"));
 
-        return new CommandResult(output, true);
+        return new CommandResult(output, true, manager.getCollection());
     }
 
     @Override

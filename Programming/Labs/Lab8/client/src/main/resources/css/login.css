@@ -1,192 +1,304 @@
-.root {
-    -fx-font-family: "Segoe UI", "Inter", "Arial", sans-serif;
-    -fx-font-size: 16px;
-    -fx-background-color: linear-gradient(to bottom right, #f8fafc, #eef2f7);
+/* Music Band Manager login styling, glassomorph style */
+
+.root, .root-paint {
+    -fx-font-family: "Inter", "SF Pro Display", "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #eef0f5;
+    -fx-background: #eef0f5;
+    -fx-base: #eef0f5;
+    -fx-text-fill: #15171c;
+
+    -bg-app: #eef0f5;
+    -bg-app-2: #d8dde8;
+    -bg-card: #ffffff;
+    -bg-card-hover: #fbfbfd;
+    -bg-elevated: #ffffff;
+    -bg-subtle: rgba(15, 23, 42, 0.045);
+    -bg-overlay: rgba(255, 255, 255, 0.85);
+
+    -border: rgba(15, 23, 42, 0.08);
+    -border-strong: rgba(15, 23, 42, 0.14);
+    -border-focus: #2563eb;
+
+    -text-primary: #15171c;
+    -text-secondary: #5b6472;
+    -text-tertiary: #8d96a6;
+    -text-on-accent: #ffffff;
+
+    -accent: #2563eb;
+    -accent-hover: #1d4ed8;
+    -accent-2: #7c3aed;
+    -accent-soft: rgba(37, 99, 235, 0.10);
+    -success: #16a34a;
+    -success-soft: rgba(22, 163, 74, 0.10);
+    -danger: #dc2626;
+    -danger-soft: rgba(220, 38, 38, 0.10);
+
+    -shadow-1: dropshadow(gaussian, rgba(15, 23, 42, 0.08), 16, 0, 0, 4);
+    -shadow-2: dropshadow(gaussian, rgba(15, 23, 42, 0.18), 40, 0, 0, 16);
+    -shadow-focus: dropshadow(gaussian, rgba(37, 99, 235, 0.35), 12, 0, 0, 0);
 }
 
+.root.theme-dark, .root-paint.theme-dark {
+    -fx-background-color: #0b0d12;
+    -fx-background: #0b0d12;
+    -fx-base: #0b0d12;
+
+    -bg-app: #0b0d12;
+    -bg-app-2: #11141b;
+    -bg-card: #161a23;
+    -bg-card-hover: #1c2030;
+    -bg-elevated: #1a1e2a;
+    -bg-subtle: rgba(255, 255, 255, 0.05);
+    -bg-overlay: rgba(11, 13, 18, 0.85);
+
+    -border: rgba(255, 255, 255, 0.08);
+    -border-strong: rgba(255, 255, 255, 0.18);
+    -border-focus: #60a5fa;
+
+    -text-primary: #f1f3f8;
+    -text-secondary: #a8b0c2;
+    -text-tertiary: #6c7689;
+
+    -accent: #60a5fa;
+    -accent-hover: #93c5fd;
+    -accent-2: #a78bfa;
+    -accent-soft: rgba(96, 165, 250, 0.16);
+    -success: #4ade80;
+    -success-soft: rgba(74, 222, 128, 0.14);
+    -danger: #f87171;
+    -danger-soft: rgba(248, 113, 113, 0.14);
+
+    -shadow-1: dropshadow(gaussian, rgba(0, 0, 0, 0.40), 16, 0, 0, 4);
+    -shadow-2: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 40, 0, 0, 16);
+    -shadow-focus: dropshadow(gaussian, rgba(96, 165, 250, 0.50), 12, 0, 0, 0);
+}
+
+/* ---------- background blobs (drift animation) ---------- */
 .background-layer {
     -fx-background-color: transparent;
 }
 
 .bg-blob {
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.25), 80, 0.2, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.35), 120, 0.30, 0, 0);
 }
 
 .bg-blob-blue {
-    -fx-fill: rgba(37, 99, 235, 0.12);
+    -fx-fill: rgba(37, 99, 235, 0.18);
 }
 
 .bg-blob-indigo {
-    -fx-fill: rgba(99, 102, 241, 0.12);
+    -fx-fill: rgba(124, 58, 237, 0.20);
 }
 
+.bg-blob-pink {
+    -fx-fill: rgba(236, 72, 153, 0.16);
+}
+
+.root.theme-dark .bg-blob-blue {
+    -fx-fill: rgba(96, 165, 250, 0.30);
+}
+
+.root.theme-dark .bg-blob-indigo {
+    -fx-fill: rgba(167, 139, 250, 0.24);
+}
+
+.root.theme-dark .bg-blob-pink {
+    -fx-fill: rgba(244, 114, 182, 0.22);
+}
+
+/* ---------- glass card ---------- */
 .glass-card {
-    -fx-background-color: rgba(255, 255, 255, 0.75);
-    -fx-background-radius: 28;
-    -fx-border-color: rgba(226, 232, 240, 0.8);
-    -fx-border-radius: 28;
-    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.25), 34, 0.18, 0, 14);
+    -fx-background-color: -bg-card;
+    -fx-background-radius: 24;
+    -fx-border-color: -border;
+    -fx-border-radius: 24;
+    -fx-effect: -shadow-2;
 }
 
+/* ---------- logo ---------- */
 .logo-badge {
-    -fx-background-color: rgba(59, 130, 246, 0.12);
+    -fx-background-color: -accent-soft;
     -fx-background-radius: 18;
-    -fx-border-color: rgba(59, 130, 246, 0.25);
+    -fx-border-color: -accent;
+    -fx-border-width: 1.5;
     -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, -accent, 16, 0.30, 0, 6);
 }
 
 .logo-icon {
-    -fx-text-fill: #2563eb;
-    -fx-font-size: 18px;
+    -fx-text-fill: -accent;
+    -fx-font-size: 26px;
     -fx-font-weight: 700;
 }
 
 .title-label {
-    -fx-font-size: 24px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #1f2937;
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -text-primary;
+    -fx-letter-spacing: -0.6px;
 }
 
-.subtitle-label {
-    -fx-font-size: 12px;
-    -fx-text-fill: #64748b;
+/* ---------- form ---------- */
+.form-group {
+    -fx-spacing: 6;
 }
 
 .field-label {
     -fx-font-size: 12px;
-    -fx-font-weight: 600;
-    -fx-text-fill: #475569;
+    -fx-font-weight: 700;
+    -fx-text-fill: -text-secondary;
+    -fx-letter-spacing: 0.3px;
 }
 
 .field {
-    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-background-color: -bg-card;
     -fx-background-radius: 12;
-    -fx-border-color: rgba(226, 232, 240, 0.9);
+    -fx-border-color: -border;
     -fx-border-radius: 12;
-    -fx-padding: 10 12 10 12;
-    -fx-text-fill: #0f172a;
-    -fx-prompt-text-fill: rgba(100, 116, 139, 0.8);
+    -fx-padding: 12 16 12 16;
+    -fx-text-fill: -text-primary;
+    -fx-prompt-text-fill: -text-tertiary;
+    -fx-pref-height: 44;
+    -fx-font-size: 14px;
+    -fx-effect: -shadow-1;
 }
 
 .field:focused {
-    -fx-border-color: rgba(37, 99, 235, 0.6);
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.22), 12, 0.2, 0, 0);
+    -fx-border-color: -border-focus;
+    -fx-effect: -shadow-focus;
+    -fx-background-color: -bg-elevated;
 }
 
+/* ---------- buttons ---------- */
 .primary-button {
-    -fx-background-color: #2563eb;
-    -fx-text-fill: white;
+    -fx-background-color: -accent;
+    -fx-text-fill: -text-on-accent;
     -fx-background-radius: 12;
-    -fx-font-weight: 600;
-    -fx-padding: 10 24 10 24;
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.3), 14, 0.2, 0, 6);
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-padding: 12 24 12 24;
+    -fx-pref-height: 44;
+    -fx-effect: dropshadow(gaussian, -accent, 14, 0.35, 0, 5);
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-transition: -fx-background-color 160ms ease, -fx-scale-x 160ms ease, -fx-scale-y 160ms ease;
 }
 
 .primary-button:hover {
-    -fx-background-color: #1d4ed8;
+    -fx-background-color: -accent-hover;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.primary-button:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
 }
 
 .secondary-button {
-    -fx-background-color: rgba(226, 232, 240, 0.8);
-    -fx-text-fill: #0f172a;
+    -fx-background-color: -bg-subtle;
+    -fx-text-fill: -text-primary;
     -fx-background-radius: 12;
     -fx-font-weight: 600;
-    -fx-padding: 8 18 8 18;
+    -fx-font-size: 14px;
+    -fx-padding: 12 18 12 18;
+    -fx-pref-height: 44;
+    -fx-cursor: hand;
+    -fx-border-color: -border;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-transition: -fx-background-color 160ms ease;
 }
 
 .secondary-button:hover {
-    -fx-background-color: rgba(203, 213, 225, 0.9);
+    -fx-background-color: -border-strong;
 }
 
+/* ---------- status ---------- */
 .status-label {
-    -fx-text-fill: #e11d48;
     -fx-font-size: 12px;
-    -fx-min-height: 16;
+    -fx-min-height: 18;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+    -fx-padding: 2 0 2 0;
+    -fx-font-weight: 500;
+}
+
+.status-label.status-info {
+    -fx-text-fill: -text-secondary;
 }
 
 .status-label.status-success {
-    -fx-text-fill: #16a34a;
+    -fx-text-fill: -success;
+    -fx-font-weight: 600;
 }
 
 .status-label.status-error {
-    -fx-text-fill: #e11d48;
+    -fx-text-fill: -danger;
+    -fx-font-weight: 600;
 }
 
+/* ---------- language row ---------- */
 .lang-row {
     -fx-padding: 6 0 0 0;
+    -fx-spacing: 6;
 }
 
 .lang-button {
-    -fx-background-color: rgba(226, 232, 240, 0.65);
-    -fx-text-fill: #475569;
+    -fx-background-color: -bg-subtle;
     -fx-background-radius: 8;
-    -fx-font-size: 10px;
-    -fx-font-weight: 600;
-    -fx-padding: 4 8 4 8;
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-padding: 6 10 6 10;
+    -fx-cursor: hand;
+    -fx-min-width: 40;
+    -fx-border-color: transparent;
+    -fx-transition: -fx-background-color 160ms ease, -fx-text-fill 160ms ease;
 }
 
 .lang-button:hover {
-    -fx-background-color: rgba(148, 163, 184, 0.35);
-    -fx-text-fill: #1f2937;
+    -fx-background-color: -border-strong;
+    -fx-text-fill: -text-primary;
 }
 
+.lang-button:selected,
+.lang-button.lang-selected {
+    -fx-background-color: -accent;
+    -fx-text-fill: -text-on-accent;
+}
+
+
 .theme-toggle {
-    -fx-background-color: rgba(226, 232, 240, 0.5);
+    -fx-background-color: -bg-card;
     -fx-background-radius: 12;
-    -fx-border-color: rgba(148, 163, 184, 0.25);
+    -fx-border-color: -border-strong;
     -fx-border-radius: 12;
     -fx-padding: 4 6 4 6;
+    -fx-spacing: 2;
+    -fx-effect: -shadow-1;
 }
 
 .theme-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #64748b;
-    -fx-font-size: 10px;
-    -fx-font-weight: 600;
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
     -fx-background-radius: 8;
-    -fx-padding: 4 8 4 8;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-transition: -fx-background-color 160ms ease, -fx-text-fill 160ms ease;
 }
 
-.theme-button:selected {
-    -fx-background-color: rgba(255, 255, 255, 0.85);
-    -fx-text-fill: #2563eb;
-    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.12), 8, 0.1, 0, 2);
+.theme-button:hover {
+    -fx-background-color: -bg-subtle;
 }
 
-.theme-dark {
-    -fx-background-color: linear-gradient(to bottom right, #0c0c0e, #0f172a);
-}
-
-.theme-dark .glass-card {
-    -fx-background-color: rgba(12, 12, 14, 0.75);
-    -fx-border-color: rgba(255, 255, 255, 0.12);
-}
-
-.theme-dark .title-label {
-    -fx-text-fill: rgba(255, 255, 255, 0.92);
-}
-
-.theme-dark .field-label {
-    -fx-text-fill: rgba(255, 255, 255, 0.6);
-}
-
-.theme-dark .field {
-    -fx-background-color: rgba(0, 0, 0, 0.2);
-    -fx-border-color: rgba(255, 255, 255, 0.12);
-    -fx-text-fill: rgba(255, 255, 255, 0.9);
-    -fx-prompt-text-fill: rgba(255, 255, 255, 0.4);
-}
-
-.theme-dark .theme-toggle {
-    -fx-background-color: rgba(0, 0, 0, 0.35);
-    -fx-border-color: rgba(255, 255, 255, 0.15);
-}
-
-.theme-dark .theme-button {
-    -fx-text-fill: rgba(255, 255, 255, 0.55);
-}
-
-.theme-dark .theme-button:selected {
-    -fx-background-color: rgba(255, 255, 255, 0.12);
-    -fx-text-fill: #60a5fa;
+.theme-button:selected,
+.theme-button.theme-selected {
+    -fx-background-color: -accent;
+    -fx-text-fill: -text-on-accent;
+    -fx-effect: dropshadow(gaussian, -accent, 10, 0.35, 0, 2);
 }

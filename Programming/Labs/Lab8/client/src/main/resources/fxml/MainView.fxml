@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane fx:id="root" stylesheets="@/css/main.css" styleClass="root"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.javafx.MainController">
+    <left>
+        <VBox fx:id="sidebarPane" styleClass="sidebar-pane" minWidth="250" prefWidth="270" maxWidth="280">
+        </VBox>
+    </left>
+    <center>
+        <SplitPane fx:id="centerSplitPane" styleClass="center-split-pane" dividerPositions="0.45">
+            <items>
+                <AnchorPane styleClass="table-area">
+                    <children>
+                        <VBox fx:id="tableContainer" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" spacing="12">
+                            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                            <children>
+                                <HBox fx:id="tableHeader" spacing="12" alignment="CENTER_LEFT" styleClass="table-header">
+                                    <Label fx:id="tableTitle" text="Music Bands" styleClass="table-title"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <TextField fx:id="filterField" promptText="Filter by name..." styleClass="filter-field" prefWidth="240" maxWidth="280"/>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+
+                <AnchorPane styleClass="viz-area">
+                    <children>
+                        <VBox fx:id="vizContainer" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" spacing="12">
+                            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                            <children>
+                                <HBox fx:id="vizHeader" spacing="12" alignment="CENTER_LEFT" styleClass="viz-header">
+                                    <Circle radius="5" fill="#007AFF" styleClass="viz-icon"/>
+                                    <Label fx:id="vizTitle" text="Visualization" styleClass="viz-title"/>
+                                </HBox>
+                                <StackPane fx:id="vizStackPane" styleClass="viz-stack-pane" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <VBox fx:id="detailsPopup" styleClass="details-popup" visible="false" managed="false" maxWidth="300" StackPane.alignment="TOP_LEFT">
+                                            <StackPane.margin>
+                                                <Insets top="20" left="20"/>
+                                            </StackPane.margin>
+                                            <Label fx:id="detailsTitle" text="Band Details" styleClass="details-title"/>
+                                            <VBox fx:id="detailsContent" spacing="6" styleClass="details-content"/>
+                                        </VBox>
+                                    </children>
+                                </StackPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </center>
+    <top>
+        <VBox>
+            <HBox fx:id="topBarPane" styleClass="top-bar-pane">
+                <padding><Insets left="0" right="0" top="0" bottom="0"/></padding>
+            </HBox>
+            <HBox fx:id="statusBar" styleClass="status-bar" alignment="CENTER_LEFT">
+                <padding><Insets left="20" right="20" top="0" bottom="10"/></padding>
+                <Label fx:id="statusLabel" text="" styleClass="status-label"/>
+            </HBox>
+        </VBox>
+    </top>
+    <StackPane fx:id="toastLayer" StackPane.alignment="BOTTOM_RIGHT"
+               pickOnBounds="false" mouseTransparent="true"
+               BorderPane.alignment="BOTTOM_RIGHT">
+        <VBox fx:id="toastPane" styleClass="toast-pane"
+              StackPane.alignment="BOTTOM_RIGHT" pickOnBounds="false" mouseTransparent="true"/>
+    </StackPane>
+</BorderPane>

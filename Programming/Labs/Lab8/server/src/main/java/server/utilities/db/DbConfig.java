@@ -29,6 +29,12 @@ public class DbConfig {
         String dbName = getEnvOrDefault("DB_NAME", "studs");
         String user = getEnvOrDefault("DB_USER", "s503266");
         String password = getEnvOrDefault("DB_PASSWORD", "vzMfDAaaCyghQx1q");
+        if (password == null || password.isBlank()) {
+            throw new IllegalStateException(
+                    "DB_PASSWORD environment variable is required. "
+                    + "Set it before starting the server (e.g. "
+                    + "`DB_PASSWORD=... java -jar server.jar`).");
+        }
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbName;
         return new DbConfig(url, user, password);
     }
