@@ -15,7 +15,7 @@ const originY = SIZE / 2;
 const scale = 35;
 
 const ctx = canvas.getContext('2d');
-drawArea(0);
+drawArea(3);
 document.getElementById("r").addEventListener("change", function () {
     drawArea(Number(this.value));
 });
@@ -117,6 +117,41 @@ function drawArea(r) {
     drawCircle(r);
     drawRectangle(r);
     drawTriangle(r);
+    drawLabels(r);
+    drawTicks(r);
+}
+
+function drawTicks(r) {
+    ctx.beginPath();
+    ctx.strokeStyle = "black";
+
+    const positions = [r, r/2, -r/2, -r];
+
+    positions.forEach(function (p) {
+        // on the x axis: vertical tick
+        ctx.moveTo(originX + p * scale, originY - 5);
+        ctx.lineTo(originX + p * scale, originY + 5);
+
+        // on the y axis: horizontal tick
+        ctx.moveTo(originX - 5, originY - p * scale);
+        ctx.lineTo(originX + 5, originY - p * scale);
+    });
+    ctx.stroke();
+}
+
+function drawLabels(r) {
+    ctx.fillStyle = "black";
+    ctx.font = "12px Arial";
+
+    ctx.fillText("R", originX + r * scale, originY + 14);
+    ctx.fillText("R/2", originX + (r/2) * scale, originY + 14);
+    ctx.fillText("-R", originX - r * scale, originY + 14);
+    ctx.fillText("-R/2", originX - (r/2) * scale, originY + 14);
+
+    ctx.fillText("R", originX + 6, originY - r * scale);
+    ctx.fillText("R/2", originX + 6, originY - (r/2) * scale);
+    ctx.fillText("-R", originX + 6, originY + r * scale);
+    ctx.fillText("-R/2", originX + 6, originY + (r/2) * scale);
 }
 
 function drawAxis() {
@@ -126,7 +161,16 @@ function drawAxis() {
     ctx.lineTo(SIZE, originY);
     ctx.moveTo(originX, 0);
     ctx.lineTo(originX, SIZE);
+
+    ctx.moveTo(SIZE - 10, originY - 5);
+    ctx.lineTo(SIZE, originY);
+    ctx.lineTo(SIZE - 10, originY + 5);
+
+    ctx.moveTo(originX -5 , 10);
+    ctx.lineTo(originX, 0)
+    ctx.lineTo(originX + 5, 10);
     ctx.stroke();
+    
 }
 
 function drawCircle(r) {

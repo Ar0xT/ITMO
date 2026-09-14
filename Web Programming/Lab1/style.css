@@ -1,0 +1,45 @@
+/*Inheritance requirement*/
+body {
+    font-family: system-ui;
+    color: black;
+}
+
+/* Header requirement*/
+#header {
+    font-family: fantasy;
+    color: darkblue;
+    font-size: 30px;
+}
+
+/* Attribute selector requirement*/
+input[type="text"] {
+    padding: 5px;
+}
+
+/* Pseudo-class requirement*/
+button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Pseudo-element requirement*/
+#header::before {
+    content: 'ITMO';
+    display: flex;
+    justify-content: center;
+}
+
+#results {
+    border-collapse: collapse;
+}
+#results, #results th, #results td{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.main {
+    border: 1px solid black;
+}
+
+
+
+
