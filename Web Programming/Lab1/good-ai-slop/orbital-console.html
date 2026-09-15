@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORBITAL TARGETING CONSOLE — 12710</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================
+   ORBITAL TARGETING CONSOLE
+   glass · plasma · radar
+   ========================================================== */
+
+:root{
+  --void:#03050e;
+  --deep:#070d1f;
+  --cyan:#22e6ff;
+  --mag:#ff2bd1;
+  --lime:#5dff9f;
+  --violet:#7b5bff;
+  --amber:#ffb648;
+  --ink:#cfe8f5;
+  --dim:#5d7794;
+  --glass:rgba(10,20,42,.42);
+  --edge:rgba(34,230,255,.22);
+  --r:18px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  margin:0;
+  font-family:"Rajdhani",system-ui,sans-serif;
+  color:var(--ink);
+  background:var(--void);
+  overflow-x:hidden;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- background layers ---------- */
+#stars{position:fixed;inset:0;z-index:0;display:block}
+
+.aurora{
+  position:fixed;inset:-40vmax;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(38vmax 38vmax at 22% 28%, rgba(34,230,255,.16), transparent 60%),
+    radial-gradient(34vmax 34vmax at 78% 24%, rgba(255,43,209,.14), transparent 62%),
+    radial-gradient(46vmax 46vmax at 50% 96%, rgba(123,91,255,.16), transparent 60%);
+  filter:blur(20px);
+  animation:drift 26s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  0%{transform:translate3d(-2%,-1%,0) scale(1)}
+  100%{transform:translate3d(3%,2%,0) scale(1.12)}
+}
+
+.scan{
+  position:fixed;inset:0;z-index:60;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,
+    rgba(255,255,255,.035) 0 1px, transparent 1px 3px);
+  mix-blend-mode:overlay;
+}
+.beam{
+  position:fixed;left:0;right:0;height:180px;z-index:61;pointer-events:none;
+  background:linear-gradient(to bottom, transparent, rgba(34,230,255,.07), transparent);
+  animation:sweepdown 7s linear infinite;
+}
+@keyframes sweepdown{from{top:-200px}to{top:100%}}
+
+.grain{
+  position:fixed;inset:0;z-index:62;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.vignette{
+  position:fixed;inset:0;z-index:59;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 45%, transparent 40%, rgba(0,0,0,.72) 100%);
+}
+#cursorglow{
+  position:fixed;width:520px;height:520px;z-index:1;pointer-events:none;left:0;top:0;
+  margin:-260px 0 0 -260px;border-radius:50%;
+  background:radial-gradient(circle, rgba(34,230,255,.10), transparent 62%);
+  transition:opacity .4s;
+}
+
+/* ---------- layout ---------- */
+.stage{
+  position:relative;z-index:10;
+  max-width:1280px;margin:0 auto;padding:28px 22px 80px;
+  transform-style:preserve-3d;
+}
+
+/* ---------- status rail ---------- */
+.rail{
+  display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;
+  font-family:"Orbitron",monospace;font-size:10.5px;letter-spacing:.22em;
+  color:var(--dim);padding:10px 16px;margin-bottom:22px;
+  border:1px solid rgba(34,230,255,.14);border-radius:999px;
+  background:rgba(6,12,28,.5);backdrop-filter:blur(14px);
+}
+.rail b{color:var(--cyan);font-weight:700}
+.pulse{
+  width:7px;height:7px;border-radius:50%;background:var(--lime);
+  box-shadow:0 0 12px var(--lime);animation:blip 1.6s ease-in-out infinite;
+}
+@keyframes blip{0%,100%{opacity:1}50%{opacity:.25}}
+.rail .spacer{margin-left:auto}
+
+/* ---------- hero title ---------- */
+.masthead{margin:0 0 26px;position:relative}
+.glitch{
+  position:relative;display:inline-block;
+  font-family:"Orbitron",sans-serif;font-weight:900;
+  font-size:clamp(30px,6.4vw,74px);line-height:.94;letter-spacing:-.02em;
+  margin:0;color:#eafcff;
+  text-shadow:0 0 28px rgba(34,230,255,.55), 0 0 80px rgba(123,91,255,.35);
+}
+.glitch::before,.glitch::after{
+  content:attr(data-t);position:absolute;inset:0;
+}
+.glitch::before{color:var(--mag);transform:translate(3px,-2px);
+  clip-path:polygon(0 2%,100% 2%,100% 34%,0 34%);animation:gl1 3.4s steps(2,end) infinite}
+.glitch::after{color:var(--cyan);transform:translate(-3px,2px);
+  clip-path:polygon(0 62%,100% 62%,100% 96%,0 96%);animation:gl2 2.7s steps(2,end) infinite}
+@keyframes gl1{0%,92%,100%{opacity:0}93%{opacity:.9;transform:translate(7px,-3px)}97%{opacity:.6;transform:translate(-5px,1px)}}
+@keyframes gl2{0%,89%,100%{opacity:0}90%{opacity:.85;transform:translate(-8px,2px)}95%{opacity:.5;transform:translate(4px,-2px)}}
+
+.subhead{
+  font-size:15px;color:var(--dim);max-width:62ch;margin:12px 0 0;
+}
+.subhead em{color:var(--cyan);font-style:normal}
+
+/* ---------- glass panels ---------- */
+.grid{
+  display:grid;gap:20px;
+  grid-template-columns:minmax(300px,1fr) minmax(320px,1.25fr);
+  align-items:start;
+}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+.panel{
+  position:relative;border-radius:var(--r);
+  background:linear-gradient(160deg, rgba(16,28,54,.58), rgba(6,11,26,.42));
+  border:1px solid var(--edge);
+  backdrop-filter:blur(22px) saturate(150%);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.03) inset,
+    0 30px 70px rgba(0,0,0,.6),
+    0 0 60px rgba(34,230,255,.06);
+  padding:22px;
+  overflow:hidden;
+}
+.panel::after{ /* top sheen */
+  content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(34,230,255,.75),transparent);
+}
+.corner{position:absolute;width:16px;height:16px;border:1px solid rgba(34,230,255,.5);pointer-events:none}
+.corner.tl{top:8px;left:8px;border-right:0;border-bottom:0}
+.corner.tr{top:8px;right:8px;border-left:0;border-bottom:0}
+.corner.bl{bottom:8px;left:8px;border-right:0;border-top:0}
+.corner.br{bottom:8px;right:8px;border-left:0;border-top:0}
+
+.panel h3{
+  font-family:"Orbitron",sans-serif;font-size:12px;letter-spacing:.24em;
+  color:var(--cyan);margin:0 0 18px;font-weight:700;
+  display:flex;align-items:center;gap:10px;
+}
+.panel h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(34,230,255,.4),transparent)}
+
+/* ---------- radar panel: the hero ---------- */
+.radar{padding:18px;isolation:isolate}
+.radar .halo{
+  position:absolute;inset:-45%;z-index:-1;
+  background:conic-gradient(from 0deg, transparent 0 62%, rgba(34,230,255,.55) 78%, rgba(123,91,255,.5) 86%, transparent 100%);
+  animation:spin 9s linear infinite;filter:blur(28px);opacity:.55;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.radar canvas{
+  display:block;width:100%;height:auto;border-radius:12px;
+  background:radial-gradient(circle at 50% 50%, rgba(10,30,54,.9), rgba(3,6,16,.96));
+  cursor:crosshair;
+}
+.readout{
+  display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;
+  font-family:"Orbitron",monospace;font-size:11px;letter-spacing:.15em;color:var(--dim);
+}
+.readout b{color:var(--cyan);font-weight:600}
+
+/* ---------- controls ---------- */
+.field{margin-bottom:22px}
+.field > span.lab{
+  display:block;font-family:"Orbitron",sans-serif;font-size:10px;
+  letter-spacing:.22em;color:var(--dim);margin-bottom:9px;
+}
+
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;width:0;height:0}
+.seg label{
+  cursor:pointer;padding:8px 11px;min-width:46px;text-align:center;
+  border:1px solid rgba(34,230,255,.18);border-radius:9px;
+  background:rgba(8,18,38,.5);font-weight:600;font-size:14px;color:var(--ink);
+  transition:background .18s, color .18s, box-shadow .18s, transform .12s;
+}
+.seg label:hover{background:rgba(34,230,255,.10);transform:translateY(-1px)}
+.seg input:checked + label{
+  background:linear-gradient(180deg,rgba(34,230,255,.28),rgba(34,230,255,.10));
+  color:#eafcff;border-color:var(--cyan);
+  box-shadow:0 0 22px rgba(34,230,255,.35), 0 0 0 1px rgba(34,230,255,.5) inset;
+}
+.seg input:focus-visible + label{outline:2px solid var(--mag);outline-offset:2px}
+
+.seg.reactor label{min-width:58px;font-family:"Orbitron",sans-serif;font-size:15px;padding:11px 0}
+.seg.reactor input:checked + label{
+  background:linear-gradient(180deg,rgba(123,91,255,.34),rgba(123,91,255,.12));
+  border-color:var(--violet);box-shadow:0 0 24px rgba(123,91,255,.45)
+}
+
+.ybox{position:relative}
+#y{
+  width:100%;padding:13px 15px;font-family:"Orbitron",monospace;font-size:17px;
+  color:#eafcff;background:rgba(4,10,24,.7);
+  border:1px solid rgba(34,230,255,.22);border-radius:11px;
+  letter-spacing:.06em;transition:border-color .2s, box-shadow .2s;
+}
+#y:focus{outline:0;border-color:var(--cyan);box-shadow:0 0 26px rgba(34,230,255,.28)}
+#y.bad{border-color:var(--mag);box-shadow:0 0 26px rgba(255,43,209,.3)}
+#y::placeholder{color:#3d5470}
+
+.gauge{position:relative;height:4px;margin-top:10px;border-radius:4px;background:rgba(34,230,255,.12)}
+.gauge .mid{position:absolute;left:50%;top:-4px;width:1px;height:12px;background:rgba(34,230,255,.35)}
+.gauge .knob{
+  position:absolute;top:-4px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 14px var(--cyan);
+  transition:left .18s cubic-bezier(.2,.9,.3,1.2), background .2s, box-shadow .2s;
+}
+.gauge .knob.bad{background:var(--mag);box-shadow:0 0 14px var(--mag)}
+.gauge .ends{
+  display:flex;justify-content:space-between;font-size:10px;color:var(--dim);
+  font-family:"Orbitron",monospace;margin-top:8px;letter-spacing:.1em;
+}
+
+.actions{display:flex;gap:10px;margin-top:26px}
+.btn{
+  position:relative;flex:1;padding:15px 18px;cursor:pointer;overflow:hidden;
+  font-family:"Orbitron",sans-serif;font-size:12px;font-weight:700;letter-spacing:.18em;
+  border-radius:12px;border:1px solid var(--cyan);color:#03131b;
+  background:linear-gradient(135deg,var(--cyan),#6ff0ff 50%,var(--violet));
+  box-shadow:0 0 32px rgba(34,230,255,.34);
+  transition:transform .12s, box-shadow .2s, filter .2s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 48px rgba(34,230,255,.55);filter:brightness(1.08)}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn.ghost{
+  flex:0 0 auto;background:transparent;color:var(--mag);border-color:rgba(255,43,209,.45);
+  box-shadow:none;
+}
+.btn.ghost:hover{background:rgba(255,43,209,.12);box-shadow:0 0 28px rgba(255,43,209,.28)}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+#error{
+  min-height:22px;margin:14px 0 0;font-size:14px;font-weight:600;color:var(--mag);
+  text-shadow:0 0 16px rgba(255,43,209,.5);
+}
+
+/* ---------- telemetry ---------- */
+.lower{margin-top:20px;display:grid;gap:20px;grid-template-columns:260px 1fr}
+@media(max-width:900px){.lower{grid-template-columns:1fr}}
+
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px dashed rgba(34,230,255,.12)}
+.stat:last-child{border:0}
+.stat span{font-size:12px;letter-spacing:.16em;color:var(--dim);font-family:"Orbitron",sans-serif}
+.stat b{font-family:"Orbitron",sans-serif;font-size:26px;color:#eafcff;font-weight:700;text-shadow:0 0 20px rgba(34,230,255,.45)}
+
+.logwrap{max-height:360px;overflow:auto;margin:-4px -6px;padding:4px 6px}
+.logwrap::-webkit-scrollbar{width:6px}
+.logwrap::-webkit-scrollbar-thumb{background:rgba(34,230,255,.3);border-radius:6px}
+
+table.log{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14px}
+table.log th{
+  font-family:"Orbitron",sans-serif;font-size:9.5px;letter-spacing:.2em;color:var(--dim);
+  text-align:left;padding:0 12px 6px;font-weight:600;
+}
+table.log td{
+  padding:11px 12px;background:rgba(9,18,38,.55);
+  border-top:1px solid rgba(34,230,255,.10);border-bottom:1px solid rgba(34,230,255,.10);
+  font-family:"Orbitron",monospace;font-size:12.5px;
+}
+table.log td:first-child{border-left:1px solid rgba(34,230,255,.10);border-radius:10px 0 0 10px}
+table.log td:last-child{border-right:1px solid rgba(34,230,255,.10);border-radius:0 10px 10px 0;color:var(--dim);font-size:11px}
+table.log tr.fresh td{animation:slidein .45s cubic-bezier(.2,.9,.3,1.1) both}
+@keyframes slidein{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+
+.pill{
+  display:inline-block;padding:3px 10px;border-radius:999px;font-size:10px;letter-spacing:.14em;
+  font-family:"Orbitron",sans-serif;font-weight:700;
+}
+.pill.hit{color:#052b18;background:var(--lime);box-shadow:0 0 18px rgba(93,255,159,.5)}
+.pill.miss{color:#2a0320;background:var(--mag);box-shadow:0 0 18px rgba(255,43,209,.45)}
+
+.empty{padding:34px 12px;text-align:center;color:var(--dim);font-size:14px}
+
+/* ---------- verdict flash ---------- */
+#verdict{
+  position:fixed;inset:0;z-index:70;display:grid;place-content:center;text-align:center;
+  pointer-events:none;opacity:0;
+}
+#verdict.on{animation:verdict 1.25s ease-out}
+@keyframes verdict{
+  0%{opacity:0;transform:scale(.88)}
+  12%{opacity:1;transform:scale(1)}
+  70%{opacity:1}
+  100%{opacity:0;transform:scale(1.06)}
+}
+#verdict .v{
+  font-family:"Orbitron",sans-serif;font-weight:900;font-size:clamp(38px,9vw,104px);
+  letter-spacing:.04em;line-height:1;
+}
+#verdict .s{font-family:"Orbitron",monospace;font-size:13px;letter-spacing:.35em;color:var(--dim);margin-top:14px}
+
+/* ---------- boot ---------- */
+#boot{
+  position:fixed;inset:0;z-index:99;background:#02040c;
+  display:grid;place-content:center;gap:6px;
+  font-family:"Orbitron",monospace;font-size:12.5px;color:var(--cyan);letter-spacing:.14em;
+  transition:opacity .6s, visibility .6s;
+}
+#boot.done{opacity:0;visibility:hidden}
+#boot .ln{opacity:0;animation:bootln .3s forwards}
+#boot .ok{color:var(--lime)}
+
+@keyframes bootln{to{opacity:1}}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<canvas id="stars"></canvas>
+<div id="cursorglow"></div>
+
+<div class="stage" id="stage">
+
+  <div class="rail">
+    <span class="pulse"></span>
+    <span>LINK <b>STABLE</b></span>
+    <span>NODE <b>P3213</b></span>
+    <span>VARIANT <b>12710</b></span>
+    <span class="spacer"></span>
+    <span>FPS <b id="fps">—</b></span>
+    <span id="clock"><b>--:--:--</b></span>
+  </div>
+
+  <header class="masthead">
+    <h1 class="glitch" data-t="ORBITAL TARGETING">ORBITAL TARGETING</h1>
+    <p class="subhead">Fire a probe at the plotted coordinate. If it lands inside the live containment field you get a <em>lock</em>. Everything you shoot stays on the scope until you purge it.</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- ============ CONTROL DECK ============ -->
+    <section class="panel">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <h3>Firing solution</h3>
+
+      <form id="pointForm" autocomplete="off">
+
+        <div class="field">
+          <span class="lab">X coordinate</span>
+          <div class="seg" id="xSeg" role="radiogroup" aria-label="X coordinate"></div>
+        </div>
+
+        <div class="field">
+          <span class="lab">Y coordinate</span>
+          <div class="ybox">
+            <input type="text" id="y" name="y" inputmode="decimal" placeholder="-3.00 … 3.00" aria-label="Y coordinate">
+            <div class="gauge"><div class="mid"></div><div class="knob" id="knob"></div></div>
+            <div class="ends"><span>-3</span><span>0</span><span>+3</span></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="lab">Field radius R</span>
+          <div class="seg reactor" id="rSeg" role="radiogroup" aria-label="Field radius"></div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Fire probe</button>
+          <button class="btn ghost" type="button" id="purge">Purge</button>
+        </div>
+
+        <p id="error" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- ============ RADAR ============ -->
+    <section class="panel radar">
+      <div class="halo"></div>
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <h3>Containment scope</h3>
+      <canvas id="scope" width="500" height="500" aria-label="Containment field scope"></canvas>
+      <div class="readout">
+        <span>CURSOR <b id="rdCursor">—</b></span>
+        <span>FIELD <b id="rdField">R 3</b></span>
+        <span>PROBES <b id="rdCount">0</b></span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ TELEMETRY ============ -->
+  <div class="lower">
+    <section class="panel">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <h3>Tally</h3>
+      <div class="stat"><span>FIRED</span><b id="sShots">0</b></div>
+      <div class="stat"><span>LOCKED</span><b id="sHits" style="color:var(--lime)">0</b></div>
+      <div class="stat"><span>ACCURACY</span><b id="sAcc">0%</b></div>
+    </section>
+
+    <section class="panel">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <h3>Probe log</h3>
+      <div class="logwrap">
+        <table class="log">
+          <thead><tr><th>X</th><th>Y</th><th>R</th><th>RESULT</th><th>TIME</th></tr></thead>
+          <tbody id="logBody"></tbody>
+        </table>
+        <div class="empty" id="emptyMsg">No probes fired. Pick a coordinate and launch one.</div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="verdict"><div class="v" id="vText"></div><div class="s" id="vSub"></div></div>
+
+<div class="scan"></div>
+<div class="beam"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<div id="boot">
+  <div class="ln" style="animation-delay:.05s">&gt; powering reactor ............ <span class="ok">OK</span></div>
+  <div class="ln" style="animation-delay:.30s">&gt; calibrating scope .......... <span class="ok">OK</span></div>
+  <div class="ln" style="animation-delay:.55s">&gt; loading field geometry ..... <span class="ok">OK</span></div>
+  <div class="ln" style="animation-delay:.80s">&gt; restoring probe log ........ <span class="ok">OK</span></div>
+  <div class="ln" style="animation-delay:1.05s">&gt; <span style="color:#fff">CONSOLE READY</span></div>
+</div>
+
+<script>
+/* ==========================================================
+   1. STATE
+   ========================================================== */
+const X_VALUES = [-2,-1.5,-1,-0.5,0,0.5,1,1.5,2];
+const R_VALUES = [1,2,3,4,5];
+
+const state = {
+  x:null,
+  y:null,
+  r:3,
+  results:[],
+  hover:null,      // {x,y} in math coords
+  flashZone:null,  // 'circle' | 'rect' | 'tri'
+  flashUntil:0
+};
+
+try{
+  const saved = localStorage.getItem("results");
+  if(saved) state.results = JSON.parse(saved) || [];
+}catch(e){ state.results = []; }
+
+/* ==========================================================
+   2. GEOMETRY  — unchanged rules, three zones
+   circle : quarter disc in Q1, radius R
+   rect   : x in [0, R/2],  y in [-R, 0]
+   tri    : corners (0,0) (-R/2,0) (0,-R/2)
+   ========================================================== */
+function zoneOf(x,y,r){
+  if(x>=0 && y>=0 && x*x + y*y <= r*r)          return "circle";
+  if(x>=0 && x<=r/2 && y<=0 && y>=-r)           return "rect";
+  if(x<=0 && y<=0 && y >= -x - r/2)             return "tri";
+  return null;
+}
+const hasHit = (x,y,r) => zoneOf(x,y,r) !== null;
+
+/* ==========================================================
+   3. AUDIO — synthesized, no assets
+   ========================================================== */
+let actx = null;
+function audio(){
+  if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  return actx;
+}
+function tone(freq, dur, type="sine", gain=.08, slideTo=null){
+  const a = audio(); if(!a) return;
+  const o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.value = freq;
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, a.currentTime+dur);
+  g.gain.value = gain;
+  g.gain.exponentialRampToValueAtTime(.0001, a.currentTime+dur);
+  o.connect(g).connect(a.destination);
+  o.start(); o.stop(a.currentTime+dur);
+}
+const sfx = {
+  tick(){ tone(1200,.04,"square",.02); },
+  fire(){ tone(160,.22,"sawtooth",.06,900); },
+  hit(){ [523,659,880].forEach((f,i)=>setTimeout(()=>tone(f,.30,"triangle",.07),i*70)); },
+  miss(){ tone(110,.38,"sawtooth",.07,55); },
+  purge(){ tone(700,.35,"square",.05,90); }
+};
+
+/* ==========================================================
+   4. CONTROLS
+   ========================================================== */
+const xSeg = document.getElementById("xSeg");
+const rSeg = document.getElementById("rSeg");
+
+X_VALUES.forEach((v,i)=>{
+  xSeg.insertAdjacentHTML("beforeend",
+    `<input type="radio" name="x" id="x${i}" value="${v}"><label for="x${i}">${v}</label>`);
+});
+R_VALUES.forEach((v,i)=>{
+  rSeg.insertAdjacentHTML("beforeend",
+    `<input type="radio" name="r" id="r${i}" value="${v}"${v===3?" checked":""}><label for="r${i}">${v}</label>`);
+});
+
+xSeg.addEventListener("change", e=>{
+  state.x = Number(e.target.value);
+  sfx.tick();
+});
+rSeg.addEventListener("change", e=>{
+  state.r = Number(e.target.value);
+  document.getElementById("rdField").textContent = "R " + state.r;
+  sfx.tick();
+});
+
+const yInput = document.getElementById("y");
+const knob   = document.getElementById("knob");
+yInput.addEventListener("input", ()=>{
+  const raw = yInput.value.trim().replace(",", ".");
+  const n = Number(raw);
+  const valid = raw !== "" && Number.isFinite(n) && n>=-3 && n<=3;
+  state.y = valid ? n : null;
+  yInput.classList.toggle("bad", raw !== "" && !valid);
+  knob.classList.toggle("bad", raw !== "" && !valid);
+  const clamped = Number.isFinite(n) ? Math.max(-3, Math.min(3, n)) : 0;
+  knob.style.left = ((clamped + 3) / 6 * 100) + "%";
+});
+
+/* ==========================================================
+   5. SUBMIT
+   ========================================================== */
+const errorBox = document.getElementById("error");
+function fail(msg, el){
+  errorBox.textContent = msg;
+  sfx.miss();
+  if(el) el.focus();
+  document.getElementById("stage").animate(
+    [{transform:"translateX(0)"},{transform:"translateX(-7px)"},
+     {transform:"translateX(6px)"},{transform:"translateX(0)"}],
+    {duration:190});
+}
+
+document.getElementById("pointForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  errorBox.textContent = "";
+
+  const xChecked = document.querySelector('input[name="x"]:checked');
+  if(!xChecked) return fail("Pick an X coordinate.");
+  const x = Number(xChecked.value);
+
+  const raw = yInput.value.trim().replace(",", ".");
+  if(raw === "")               return fail("Enter a Y coordinate.", yInput);
+  const y = Number(raw);
+  if(!Number.isFinite(y))      return fail("Y must be a number.", yInput);
+  if(y < -3 || y > 3)          return fail("Y must sit between -3 and 3.", yInput);
+
+  const rChecked = document.querySelector('input[name="r"]:checked');
+  if(!rChecked) return fail("Pick a field radius.");
+  const r = Number(rChecked.value);
+
+  fire(x, y, r);
+});
+
+function fire(x,y,r){
+  const zone = zoneOf(x,y,r);
+  const hitStatus = zone !== null;
+  const time = Date.now();
+
+  state.results.push({x, y, r, hitStatus, time});
+  persist();
+
+  // scope reaction
+  const p = toPx(x,y);
+  ripples.push({px:p.px, py:p.py, t0:performance.now(), hit:hitStatus});
+  if(hitStatus){
+    spawnParticles(p.px, p.py, "#5dff9f", 34);
+    state.flashZone = zone;
+    state.flashUntil = performance.now() + 700;
+  }else{
+    spawnParticles(p.px, p.py, "#ff2bd1", 16);
+  }
+  lockTarget = {px:p.px, py:p.py, t0:performance.now(), hit:hitStatus};
+
+  sfx.fire();
+  setTimeout(()=> hitStatus ? sfx.hit() : sfx.miss(), 180);
+
+  showVerdict(hitStatus, zone);
+  renderLog(true);
+  renderStats();
+}
+
+function persist(){
+  try{ localStorage.setItem("results", JSON.stringify(state.results)); }catch(e){}
+}
+
+document.getElementById("purge").addEventListener("click", ()=>{
+  state.results = [];
+  try{ localStorage.removeItem("results"); }catch(e){}
+  particles.length = 0; ripples.length = 0; lockTarget = null;
+  renderLog(); renderStats();
+  errorBox.textContent = "";
+  sfx.purge();
+  showVerdict(null);
+});
+
+/* ==========================================================
+   6. VERDICT
+   ========================================================== */
+const verdict = document.getElementById("verdict");
+const vText = document.getElementById("vText");
+const vSub  = document.getElementById("vSub");
+const ZONE_NAME = {circle:"QUARTER DISC", rect:"RECTANGLE SECTOR", tri:"TRIANGLE SECTOR"};
+
+function showVerdict(hit, zone){
+  if(hit === null){
+    vText.textContent = "LOG PURGED";
+    vText.style.color = "var(--amber)";
+    vText.style.textShadow = "0 0 50px rgba(255,182,72,.65)";
+    vSub.textContent = "SCOPE CLEARED";
+  }else if(hit){
+    vText.textContent = "LOCKED";
+    vText.style.color = "var(--lime)";
+    vText.style.textShadow = "0 0 60px rgba(93,255,159,.75)";
+    vSub.textContent = ZONE_NAME[zone] || "";
+  }else{
+    vText.textContent = "NO CONTACT";
+    vText.style.color = "var(--mag)";
+    vText.style.textShadow = "0 0 60px rgba(255,43,209,.7)";
+    vSub.textContent = "OUTSIDE FIELD";
+  }
+  verdict.classList.remove("on");
+  void verdict.offsetWidth;
+  verdict.classList.add("on");
+}
+
+/* ==========================================================
+   7. LOG + STATS
+   ========================================================== */
+const logBody  = document.getElementById("logBody");
+const emptyMsg = document.getElementById("emptyMsg");
+
+function renderLog(fresh){
+  logBody.innerHTML = "";
+  const rows = state.results.slice().reverse();
+  emptyMsg.style.display = rows.length ? "none" : "block";
+  rows.forEach((it,i)=>{
+    const tr = document.createElement("tr");
+    if(fresh && i===0) tr.className = "fresh";
+    tr.innerHTML =
+      `<td>${it.x}</td><td>${it.y}</td><td>${it.r}</td>` +
+      `<td><span class="pill ${it.hitStatus?"hit":"miss"}">${it.hitStatus?"LOCK":"MISS"}</span></td>` +
+      `<td>${new Date(it.time).toLocaleString("ru-RU")}</td>`;
+    logBody.appendChild(tr);
+  });
+  document.getElementById("rdCount").textContent = state.results.length;
+}
+
+function renderStats(){
+  const n = state.results.length;
+  const h = state.results.filter(r=>r.hitStatus).length;
+  countTo(document.getElementById("sShots"), n);
+  countTo(document.getElementById("sHits"), h);
+  document.getElementById("sAcc").textContent = n ? Math.round(h/n*100) + "%" : "0%";
+}
+
+function countTo(el, target){
+  const from = Number(el.textContent) || 0;
+  if(from === target){ el.textContent = target; return; }
+  const t0 = performance.now(), dur = 380;
+  (function step(t){
+    const k = Math.min(1, (t - t0)/dur);
+    el.textContent = Math.round(from + (target-from) * (1 - Math.pow(1-k,3)));
+    if(k < 1) requestAnimationFrame(step);
+  })(performance.now());
+}
+
+/* ==========================================================
+   8. SCOPE — canvas engine
+   ========================================================== */
+const canvas = document.getElementById("scope");
+const ctx = canvas.getContext("2d");
+const SIZE = 500, cx = SIZE/2, cy = SIZE/2;
+
+(function hidpi(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = SIZE * dpr;
+  canvas.height = SIZE * dpr;
+  canvas.style.aspectRatio = "1 / 1";
+  ctx.scale(dpr, dpr);
+})();
+
+let scale = 60, targetScale = 60;
+function computeTargetScale(){ targetScale = (SIZE/2 - 52) / Math.max(state.r, 3.2); }
+computeTargetScale();
+scale = targetScale;
+
+const toPx  = (x,y) => ({px: cx + x*scale, py: cy - y*scale});
+const toMath= (px,py)=> ({x: (px - cx)/scale, y: (cy - py)/scale});
+
+let sweep = 0;
+const ripples = [];
+const particles = [];
+let lockTarget = null;
+
+function spawnParticles(px,py,color,n){
+  for(let i=0;i<n;i++){
+    const a = Math.random()*Math.PI*2, s = 0.6 + Math.random()*3.2;
+    particles.push({px,py,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,color});
+  }
+}
+
+/* ---- field shapes as paths so we can fill + stroke + flash ---- */
+function pathCircle(r){
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.arc(cx,cy, r*scale, Math.PI*1.5, Math.PI*2);
+  ctx.closePath();
+}
+function pathRect(r){
+  ctx.beginPath();
+  ctx.rect(cx, cy, (r/2)*scale, r*scale);
+}
+function pathTri(r){
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx - (r/2)*scale, cy);
+  ctx.lineTo(cx, cy + (r/2)*scale);
+  ctx.closePath();
+}
+
+function drawField(now){
+  const r = state.r;
+  const flashing = now < state.flashUntil;
+  const k = flashing ? (state.flashUntil - now)/700 : 0;
+  const shapes = [["circle",pathCircle],["rect",pathRect],["tri",pathTri]];
+
+  shapes.forEach(([name, path])=>{
+    const lit = flashing && state.flashZone === name;
+    path(r);
+
+    const g = ctx.createLinearGradient(cx - r*scale, cy - r*scale, cx + r*scale, cy + r*scale);
+    g.addColorStop(0, lit ? `rgba(93,255,159,${.30+.45*k})` : "rgba(34,230,255,.20)");
+    g.addColorStop(1, lit ? `rgba(93,255,159,${.14+.30*k})` : "rgba(123,91,255,.16)");
+    ctx.fillStyle = g;
+    ctx.fill();
+
+    ctx.save();
+    ctx.shadowBlur = lit ? 28 : 14;
+    ctx.shadowColor = lit ? "#5dff9f" : "#22e6ff";
+    ctx.strokeStyle = lit ? "#5dff9f" : "rgba(34,230,255,.85)";
+    ctx.lineWidth = lit ? 2.4 : 1.4;
+    ctx.stroke();
+    ctx.restore();
+
+    // internal energy hatching
+    ctx.save();
+    path(r); ctx.clip();
+    ctx.strokeStyle = "rgba(34,230,255,.10)";
+    ctx.lineWidth = 1;
+    const off = (now/40) % 14;
+    ctx.beginPath();
+    for(let i=-SIZE; i<SIZE*2; i+=14){
+      ctx.moveTo(i + off, 0);
+      ctx.lineTo(i + off - SIZE, SIZE);
+    }
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+
+function drawGrid(){
+  ctx.save();
+  ctx.strokeStyle = "rgba(34,230,255,.08)";
+  ctx.lineWidth = 1;
+  for(let ring=1; ring<=6; ring++){
+    const rad = ring * scale;
+    if(rad > SIZE/2) break;
+    ctx.beginPath(); ctx.arc(cx,cy,rad,0,Math.PI*2); ctx.stroke();
+  }
+  for(let a=0; a<12; a++){
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx + Math.cos(a*Math.PI/6)*SIZE/2, cy + Math.sin(a*Math.PI/6)*SIZE/2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawAxes(){
+  const r = state.r;
+  ctx.save();
+  ctx.strokeStyle = "rgba(180,220,255,.5)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(10, cy); ctx.lineTo(SIZE-10, cy);
+  ctx.moveTo(cx, 10); ctx.lineTo(cx, SIZE-10);
+  // arrow heads
+  ctx.moveTo(SIZE-18, cy-5); ctx.lineTo(SIZE-8, cy); ctx.lineTo(SIZE-18, cy+5);
+  ctx.moveTo(cx-5, 18);      ctx.lineTo(cx, 8);      ctx.lineTo(cx+5, 18);
+  ctx.stroke();
+
+  ctx.fillStyle = "rgba(180,220,255,.75)";
+  ctx.font = "11px Orbitron, monospace";
+  ctx.textAlign = "center";
+
+  [[r,"R"],[r/2,"R/2"],[-r/2,"-R/2"],[-r,"-R"]].forEach(([p,label])=>{
+    ctx.beginPath();
+    ctx.moveTo(cx + p*scale, cy-5); ctx.lineTo(cx + p*scale, cy+5);
+    ctx.moveTo(cx-5, cy - p*scale); ctx.lineTo(cx+5, cy - p*scale);
+    ctx.stroke();
+    ctx.fillText(label, cx + p*scale, cy + 18);
+    ctx.textAlign = "left";
+    ctx.fillText(label, cx + 9, cy - p*scale + 4);
+    ctx.textAlign = "center";
+  });
+  ctx.restore();
+}
+
+function drawSweep(now){
+  sweep = (now/1000) * 0.9;
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(sweep);
+  const R = SIZE/2;
+  for(let i=0;i<26;i++){
+    const a0 = -i*0.028, a1 = a0 - 0.028;
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.arc(0,0,R,a1,a0);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(34,230,255,${0.085 * (1 - i/26)})`;
+    ctx.fill();
+  }
+  ctx.strokeStyle = "rgba(120,245,255,.7)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(R,0); ctx.stroke();
+  ctx.restore();
+}
+
+function drawPoints(now){
+  const sweepAng = ((-sweep) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+  state.results.forEach(p=>{
+    const {px,py} = toPx(p.x, p.y);
+    const active = p.r === state.r;
+    let ang = Math.atan2(py - cy, px - cx);
+    ang = (ang % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+    let d = ((sweep % (Math.PI*2)) - ang + Math.PI*2) % (Math.PI*2);
+    const glow = Math.max(0, 1 - d/0.9);   // brightens as the beam passes
+
+    const col = p.hitStatus ? "93,255,159" : "255,43,209";
+    const base = active ? .85 : .22;
+
+    ctx.save();
+    ctx.shadowBlur = 6 + glow*22;
+    ctx.shadowColor = `rgba(${col},1)`;
+    ctx.fillStyle = `rgba(${col},${Math.min(1, base + glow*.6)})`;
+    ctx.beginPath();
+    ctx.arc(px, py, active ? 4.2 + glow*2.4 : 2.6, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function drawRipples(now){
+  for(let i=ripples.length-1;i>=0;i--){
+    const rp = ripples[i];
+    const t = (now - rp.t0)/900;
+    if(t>1){ ripples.splice(i,1); continue; }
+    const col = rp.hit ? "93,255,159" : "255,43,209";
+    ctx.beginPath();
+    ctx.arc(rp.px, rp.py, 6 + t*80, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(${col},${(1-t)*.8})`;
+    ctx.lineWidth = 2*(1-t)+.4;
+    ctx.stroke();
+  }
+}
+
+function drawParticles(){
+  for(let i=particles.length-1;i>=0;i--){
+    const p = particles[i];
+    p.px += p.vx; p.py += p.vy;
+    p.vx *= .95; p.vy *= .95; p.life -= .022;
+    if(p.life <= 0){ particles.splice(i,1); continue; }
+    ctx.globalAlpha = Math.max(0,p.life);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.px-1.3, p.py-1.3, 2.6, 2.6);
+    ctx.globalAlpha = 1;
+  }
+}
+
+function drawLock(now){
+  if(!lockTarget) return;
+  const t = (now - lockTarget.t0)/1100;
+  if(t > 1){ lockTarget = null; return; }
+  const size = 44 - 26*Math.min(1,t*2);
+  const col = lockTarget.hit ? "#5dff9f" : "#ff2bd1";
+  ctx.save();
+  ctx.translate(lockTarget.px, lockTarget.py);
+  ctx.rotate(t*1.6);
+  ctx.strokeStyle = col;
+  ctx.globalAlpha = 1 - t*.7;
+  ctx.lineWidth = 1.6;
+  const s = size/2;
+  [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([sx,sy])=>{
+    ctx.beginPath();
+    ctx.moveTo(sx*s, sy*s - sy*9);
+    ctx.lineTo(sx*s, sy*s);
+    ctx.lineTo(sx*s - sx*9, sy*s);
+    ctx.stroke();
+  });
+  ctx.restore();
+}
+
+function drawHover(){
+  if(!state.hover) return;
+  const {px,py} = toPx(state.hover.x, state.hover.y);
+  const ok = hasHit(state.hover.x, state.hover.y, state.r);
+  ctx.save();
+  ctx.setLineDash([4,5]);
+  ctx.strokeStyle = ok ? "rgba(93,255,159,.55)" : "rgba(255,43,209,.4)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(px, 0); ctx.lineTo(px, SIZE);
+  ctx.moveTo(0, py); ctx.lineTo(SIZE, py);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath(); ctx.arc(px,py,7,0,Math.PI*2);
+  ctx.strokeStyle = ok ? "#5dff9f" : "#ff2bd1";
+  ctx.lineWidth = 1.4; ctx.stroke();
+  ctx.restore();
+}
+
+let lastT = performance.now(), frames = 0, fpsT = 0;
+function loop(now){
+  // eased zoom when R changes
+  computeTargetScale();
+  scale += (targetScale - scale) * 0.12;
+
+  ctx.clearRect(0,0,SIZE,SIZE);
+  drawGrid();
+  drawField(now);
+  drawSweep(now);
+  drawAxes();
+  drawRipples(now);
+  drawPoints(now);
+  drawParticles();
+  drawLock(now);
+  drawHover();
+
+  frames++;
+  if(now - fpsT > 500){
+    document.getElementById("fps").textContent = Math.round(frames*1000/(now-fpsT));
+    frames = 0; fpsT = now;
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* ---- scope interaction: hover readout + click to aim ---- */
+function canvasCoords(e){
+  const b = canvas.getBoundingClientRect();
+  const px = (e.clientX - b.left) * (SIZE / b.width);
+  const py = (e.clientY - b.top)  * (SIZE / b.height);
+  return toMath(px,py);
+}
+canvas.addEventListener("mousemove", e=>{
+  const m = canvasCoords(e);
+  state.hover = m;
+  document.getElementById("rdCursor").textContent =
+    `${m.x.toFixed(2)} / ${m.y.toFixed(2)}`;
+});
+canvas.addEventListener("mouseleave", ()=>{
+  state.hover = null;
+  document.getElementById("rdCursor").textContent = "—";
+});
+canvas.addEventListener("click", e=>{
+  const m = canvasCoords(e);
+  // snap X to the nearest selectable value, clamp Y to range
+  const nearest = X_VALUES.reduce((a,b)=> Math.abs(b-m.x) < Math.abs(a-m.x) ? b : a);
+  const idx = X_VALUES.indexOf(nearest);
+  const radio = document.getElementById("x"+idx);
+  radio.checked = true; state.x = nearest;
+
+  const y = Math.max(-3, Math.min(3, Number(m.y.toFixed(2))));
+  yInput.value = y;
+  yInput.dispatchEvent(new Event("input"));
+  errorBox.textContent = "";
+  sfx.tick();
+});
+
+/* ==========================================================
+   9. STARFIELD
+   ========================================================== */
+const sky = document.getElementById("stars");
+const sctx = sky.getContext("2d");
+let stars = [], shoot = null;
+function sizeSky(){
+  sky.width = innerWidth; sky.height = innerHeight;
+  stars = Array.from({length: Math.round(innerWidth*innerHeight/7000)}, ()=>({
+    x: Math.random()*innerWidth,
+    y: Math.random()*innerHeight,
+    z: Math.random()*.85 + .15,
+    tw: Math.random()*Math.PI*2
+  }));
+}
+sizeSky();
+addEventListener("resize", sizeSky);
+
+function skyLoop(t){
+  sctx.clearRect(0,0,sky.width,sky.height);
+  stars.forEach(s=>{
+    s.y += s.z*0.16;
+    if(s.y > sky.height) s.y = -2;
+    const a = .25 + .55*Math.abs(Math.sin(t/900 + s.tw)) * s.z;
+    sctx.fillStyle = `rgba(190,240,255,${a})`;
+    sctx.fillRect(s.x, s.y, s.z*1.7, s.z*1.7);
+  });
+
+  if(!shoot && Math.random() < .0035){
+    shoot = {x: Math.random()*sky.width, y: -20, vx: (Math.random()-.5)*7, vy: 6+Math.random()*5, life:1};
+  }
+  if(shoot){
+    sctx.strokeStyle = `rgba(160,235,255,${shoot.life})`;
+    sctx.lineWidth = 1.6;
+    sctx.beginPath();
+    sctx.moveTo(shoot.x, shoot.y);
+    sctx.lineTo(shoot.x - shoot.vx*9, shoot.y - shoot.vy*9);
+    sctx.stroke();
+    shoot.x += shoot.vx; shoot.y += shoot.vy; shoot.life -= .012;
+    if(shoot.life <= 0 || shoot.y > sky.height) shoot = null;
+  }
+  requestAnimationFrame(skyLoop);
+}
+requestAnimationFrame(skyLoop);
+
+/* ==========================================================
+   10. AMBIENT: cursor glow, parallax tilt, clock, boot
+   ========================================================== */
+const glow = document.getElementById("cursorglow");
+const stage = document.getElementById("stage");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+addEventListener("pointermove", e=>{
+  glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  if(reduced) return;
+  const dx = (e.clientX / innerWidth  - .5);
+  const dy = (e.clientY / innerHeight - .5);
+  stage.style.transform =
+    `perspective(1600px) rotateY(${dx*2.2}deg) rotateX(${-dy*1.6}deg)`;
+});
+
+function clock(){
+  const d = new Date();
+  document.getElementById("clock").innerHTML =
+    "<b>" + d.toTimeString().slice(0,8) + "</b>";
+}
+clock(); setInterval(clock, 1000);
+
+setTimeout(()=> document.getElementById("boot").classList.add("done"), 1600);
+
+/* boot the UI with stored data */
+renderLog();
+renderStats();
+document.getElementById("rdField").textContent = "R " + state.r;
+</script>
+</body>
+</html>

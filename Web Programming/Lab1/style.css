@@ -1,45 +1,104 @@
-/*Inheritance requirement*/
+/* --- INHERITANCE requirement --- */
+
 body {
     font-family: system-ui;
-    color: black;
+    color: #1f2328;
+    background-color: #f6f8fa;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    line-height: 1.6;
 }
 
-/* Header requirement*/
+
+/* --- CASCADING requirement --- */
 #header {
     font-family: fantasy;
-    color: darkblue;
+    color: #5C5C5C;
     font-size: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #d8dee4;
+    margin-bottom: 24px;
 }
 
-/* Attribute selector requirement*/
-input[type="text"] {
-    padding: 5px;
-}
+#header h1 { font-size: 22px; margin: 0 0 8px 0; }
+#header h2 { font-size: 16px; margin: 0; font-weight: normal; }
 
-/* Pseudo-class requirement*/
-button:hover {
-  background-color: #e0e0e0;
-}
 
-/* Pseudo-element requirement*/
+/* --- PSEUDO-ELEMENT requirement --- */
 #header::before {
     content: 'ITMO';
-    display: flex;
-    justify-content: center;
 }
 
+
+/* --- ATTRIBUTE SELECTOR requirement --- */
+input[type="text"], select {
+    padding: 5px;
+    border: 1px solid #d8dee4;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+
+/* --- Buttons ---*/
+button {
+    padding: 8px 16px;
+    margin-right: 8px;
+    background-color: #2596be;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* --- PSEUDO-CLASS requirement --- */
+button:hover {
+    background-color: #1d7a9c;
+}
+
+
+/* --- Table layout --- */
+.main {
+    background-color: #ffffff;
+    border: 1px solid #d8dee4;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+
+/* --- results table requirement --- */
 #results {
     border-collapse: collapse;
+    background-color: #ffffff;
+    width: 100%;
 }
-#results, #results th, #results td{
-    border: 1px solid black;
+
+#results th, #results td {
+    border: 1px solid #d8dee4;
     padding: 10px;
+    text-align: left;
 }
 
-.main {
-    border: 1px solid black;
+#results th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+}
+
+/* pseudo-class requirement #2 */
+#results tr:nth-child(even) {
+    background-color: #fafbfc;
 }
 
 
-
+/* --- Error message --- */
+#error {
+    color: #cf222e;
+    font-weight: 500;
+    min-height: 20px;
+    margin: 12px 0 0 0;
+}
 
