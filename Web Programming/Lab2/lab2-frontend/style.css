@@ -1,0 +1,132 @@
+/* --- INHERITANCE requirement --- */
+
+body {
+    font-family: system-ui;
+    color: #1f2328;
+    background-color: #f6f8fa;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    line-height: 1.6;
+}
+
+
+/* --- CASCADING requirement --- */
+#header {
+    font-family: fantasy;
+    color: #5C5C5C;
+    font-size: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #d8dee4;
+    margin-bottom: 24px;
+}
+
+#header h1 { font-size: 22px; margin: 0 0 8px 0; }
+#header h2 { font-size: 16px; margin: 0; font-weight: normal; }
+
+
+/* --- PSEUDO-ELEMENT requirement --- */
+#header::before {
+    content: 'ITMO';
+}
+
+
+/* --- ATTRIBUTE SELECTOR requirement --- */
+input[type="text"], select {
+    padding: 5px;
+    border: 1px solid #d8dee4;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+
+/* --- Buttons ---*/
+button {
+    padding: 8px 16px;
+    margin-right: 8px;
+    background-color: #2596be;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* --- PSEUDO-CLASS requirement --- */
+button:hover {
+    background-color: #1d7a9c;
+}
+
+
+/* --- Table layout --- */
+.main {
+    background-color: #ffffff;
+    border: 1px solid #d8dee4;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+
+/* --- results table requirement --- */
+#results {
+    border-collapse: collapse;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+#results th, #results td {
+    border: 1px solid #d8dee4;
+    padding: 10px;
+    text-align: left;
+}
+
+#results th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+}
+
+/* pseudo-class requirement #2 */
+#results tr:nth-child(even) {
+    background-color: #fafbfc;
+}
+
+
+/* --- Error message --- */
+#error {
+    color: #cf222e;
+    font-weight: 500;
+    min-height: 20px;
+    margin: 12px 0 0 0;
+}
+/* the X buttons stay plain until one is picked */
+button[data-x] {
+    padding: 4px 10px;
+    margin: 2px;
+    background-color: #ffffff;
+    color: #1f2328;
+    border: 1px solid #d8dee4;
+}
+
+button[data-x]:hover {
+    background-color: #eaf5fa;
+}
+
+button[data-x].selected {
+    background-color: #2596be;
+    color: #ffffff;
+    border-color: #2596be;
+}
+
+/* the picked R gets bold*/
+input[type="checkbox"] {
+    margin: 0 4px 0 10px;
+}
+
+input[type="checkbox"]:checked + label {
+    font-weight: 600;
+    color: #2596be;
+}
+

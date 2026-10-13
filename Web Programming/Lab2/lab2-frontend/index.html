@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebProgramming-Lab2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<header id="header">
+  <h1>Web-programming, Laboratory work №2, Variant 12710</h1>
+  <h2>Tserendorj Ariunbat, P3213</h2>
+</header>
+
+<table class="main">
+  <tr>
+    <td>
+      <form id="pointForm">
+        <table>
+          <tr>
+            <td>Pick X</td>
+            <td>
+              <button type="button" data-x="-2">-2</button>
+              <button type="button" data-x="-1.5">-1.5</button>
+              <button type="button" data-x="-1">-1</button>
+              <button type="button" data-x="-0.5">-0.5</button>
+              <button type="button" data-x="0">0</button>
+              <button type="button" data-x="0.5">0.5</button>
+              <button type="button" data-x="1">1</button>
+              <button type="button" data-x="1.5">1.5</button>
+              <button type="button" data-x="2">2</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="y">Enter Y</label></td>
+            <td><input type="text" id="y" name="y" placeholder="(-3; 3)" maxlength="50"></td>
+          </tr>
+
+          <tr>
+            <td>Pick R</td>
+            <td>
+              <input type="checkbox" id="r-1" name="r" value="1"><label for="r-1">1</label>
+              <input type="checkbox" id="r-1_5" name="r" value="1.5"><label for="r-1_5">1.5</label>
+              <input type="checkbox" id="r-2" name="r" value="2"><label for="r-2">2</label>
+              <input type="checkbox" id="r-2_5" name="r" value="2.5"><label for="r-2_5">2.5</label>
+              <input type="checkbox" id="r-3" name="r" value="3"><label for="r-3">3</label>
+            </td>
+          </tr>
+        </table>
+        <button type="reset">Clear</button>
+        <button type="submit">Check</button>
+        <p id="error"></p>
+      </form>
+    </td>
+    <td>
+      <canvas id="myCanvas" width="400" height="400"></canvas>
+    </td>
+  </tr>
+</table>
+
+<table id="results">
+  <thead>
+  <tr>
+    <th>X</th>
+    <th>Y</th>
+    <th>R</th>
+    <th>Result</th>
+    <th>Time</th>
+    <th>Execution time</th>
+  </tr>
+  </thead>
+  <tbody id="results-body"></tbody>
+</table>
+
+<script src="script.js"></script>
+</body>
+
+</html>

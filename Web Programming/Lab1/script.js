@@ -13,7 +13,6 @@ const SIZE = 400;
 const originX = SIZE / 2;
 const originY = SIZE / 2;
 const scale = 35;
-
 const ctx = canvas.getContext('2d');
 drawArea(3);
 document.getElementById("r").addEventListener("change", function () {
