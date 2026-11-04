@@ -17,7 +17,6 @@ const SCALE = 55;                  // pixels per unit
 let selectedX = null;
 let selectedR = null;
 
-
 // X buttons, the clicked one gets highlighted and remembered
 for (const button of xButtons) {
     button.addEventListener("click", () => {
@@ -41,6 +40,7 @@ for (const box of rBoxes) {
         drawArea();
     });
 }
+
 
 // the Check button
 form.addEventListener("submit", event => {
@@ -90,18 +90,38 @@ function validate(x, y, r) {
 
 // sends a GET request and shows either the history or the server's error
 async function sendRequest(url) {
+    let data;
     try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (response.ok) {
-            showError("");
-            showResults(data.results);
-        } else {
-            showError(data.error);
+        const response = await fetch(url, {ContentType: "json"});
+        const isJson = (response.headers.get("Content-Type") || "").includes("application/json");
+
+        // an error page that is not JSON for example when the Java server is down
+        if (!response.ok && !isJson) {
+            throw new Error("Server error " + response.status + " " + response.statusText);
+        }
+
+        data = await response.json();
+
+        // a JSON error from the server like the 400 from the validator
+        if (!response.ok) {
+            throw new Error((data && data.error) || "Server error " + response.status);
+        }
+        // a successful answer that is not in the agreed format
+        if (data === null || !Array.isArray(data.results)) {
+            throw new Error("The server sent an unexpected response");
         }
     } catch (e) {
-        showError("The server is not available");
+        // the browser's own errors get a readable message
+        const messages = {
+            TypeError: "Could not reach the web server",
+            SyntaxError: "The server sent a response that is not valid JSON"
+        };
+        showError(messages[e.name] || e.message);
+        return;
     }
+
+    showError("");
+    showResults(data.results);
 }
 
 function showError(message) {

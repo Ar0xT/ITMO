@@ -35,7 +35,7 @@ public class Main {
         long start = System.nanoTime();
         String query = request.getProperty("QUERY_STRING");
 
-        // no parameters means the page just wants the history
+        // no parameters mean the page just wants the history
         if (query == null || query.isEmpty()) {
             sendJson(200, "OK", Json.results(HISTORY));
             return;
