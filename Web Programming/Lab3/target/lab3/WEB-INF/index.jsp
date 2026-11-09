@@ -9,69 +9,73 @@
 </head>
 <body>
 
-<header>Tserendorj Ariunbat, P3213, Variant 777</header>
+<video class="bg" src="media/bg-index.mp4" poster="media/bg-index.jpg" autoplay muted loop playsinline></video>
 
-<form id="point-form" action="controller" method="get">
-    <label for="x">X, a number from -3 to 3</label>
-    <input type="text" id="x" name="x" autocomplete="off">
+<main>
+    <header>Tserendorj Ariunbat, P3213, Variant 777</header>
 
-    <label for="y">Y</label>
-    <select id="y" name="y">
-        <option value="-2">-2</option>
-        <option value="-1.5">-1.5</option>
-        <option value="-1">-1</option>
-        <option value="-0.5">-0.5</option>
-        <option value="0" selected>0</option>
-        <option value="0.5">0.5</option>
-        <option value="1">1</option>
-        <option value="1.5">1.5</option>
-        <option value="2">2</option>
-    </select>
+    <form id="point-form" action="controller" method="get">
+        <label for="x">X, a number from -3 to 3</label>
+        <input type="text" id="x" name="x" autocomplete="off">
 
-    <fieldset>
-        <legend>R</legend>
-        <label><input type="checkbox" name="r" value="1"> 1</label>
-        <label><input type="checkbox" name="r" value="1.5"> 1.5</label>
-        <label><input type="checkbox" name="r" value="2"> 2</label>
-        <label><input type="checkbox" name="r" value="2.5"> 2.5</label>
-        <label><input type="checkbox" name="r" value="3"> 3</label>
-    </fieldset>
+        <label for="y">Y</label>
+        <select id="y" name="y">
+            <option value="-2">-2</option>
+            <option value="-1.5">-1.5</option>
+            <option value="-1">-1</option>
+            <option value="-0.5">-0.5</option>
+            <option value="0" selected>0</option>
+            <option value="0.5">0.5</option>
+            <option value="1">1</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+        </select>
 
-    <p id="message" class="error"></p>
-    <button type="submit">Check</button>
-</form>
+        <fieldset>
+            <legend>R</legend>
+            <label><input type="checkbox" name="r" value="1"> 1</label>
+            <label><input type="checkbox" name="r" value="1.5"> 1.5</label>
+            <label><input type="checkbox" name="r" value="2"> 2</label>
+            <label><input type="checkbox" name="r" value="2.5"> 2.5</label>
+            <label><input type="checkbox" name="r" value="3"> 3</label>
+        </fieldset>
 
-<canvas id="graph" width="400" height="400"></canvas>
-
-<table>
-    <thead>
-    <tr>
-        <th>X</th>
-        <th>Y</th>
-        <th>R</th>
-        <th>Result</th>
-        <th>Time</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="res" items="${results}">
-        <tr>
-            <td>${res.x}</td>
-            <td>${res.y}</td>
-            <td>${res.r}</td>
-            <td class="${res.hit ? 'hit' : 'miss'}">${res.hit ? 'Hit' : 'Miss'}</td>
-            <td>${res.time}</td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-
-<c:if test="${not empty results}">
-    <form action="controller" method="get">
-        <input type="hidden" name="action" value="clear">
-        <button type="submit">Clear results</button>
+        <p id="message" class="error"></p>
+        <button type="submit">Check</button>
     </form>
-</c:if>
+
+    <canvas id="graph" width="400" height="400"></canvas>
+
+    <table>
+        <thead>
+        <tr>
+            <th>X</th>
+            <th>Y</th>
+            <th>R</th>
+            <th>Result</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="res" items="${results}">
+            <tr>
+                <td>${res.x}</td>
+                <td>${res.y}</td>
+                <td>${res.r}</td>
+                <td class="${res.hit ? 'hit' : 'miss'}">${res.hit ? 'Hit' : 'Miss'}</td>
+                <td>${res.time}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+
+    <c:if test="${not empty results}">
+        <form action="controller" method="get">
+            <input type="hidden" name="action" value="clear">
+            <button type="submit">Clear results</button>
+        </form>
+    </c:if>
+</main>
 
 <script>
     const points = [

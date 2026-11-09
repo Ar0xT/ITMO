@@ -10,12 +10,8 @@ const xInput = document.getElementById("x");
 const message = document.getElementById("message");
 const rBoxes = document.querySelectorAll('input[name="r"]');
 
-
-
 restoreLastR();
 redraw();
-
-
 
 for (const box of rBoxes) {
     box.addEventListener("change", () => onRChange(box));
@@ -23,9 +19,6 @@ for (const box of rBoxes) {
 form.addEventListener("submit", onSubmit);
 canvas.addEventListener("click", onCanvasClick);
 
-
-
-// tick last ticked R
 function restoreLastR() {
     if (points.length === 0) {
         return;
@@ -36,8 +29,6 @@ function restoreLastR() {
     }
 }
 
-
-// drawing
 
 function redraw() {
     ctx.clearRect(0, 0, SIZE, SIZE);
@@ -147,9 +138,7 @@ function drawPoints() {
 }
 
 
-// user actions
 
-// only one R can be ticked at a time
 function onRChange(changedBox) {
     if (changedBox.checked) {
         for (const box of rBoxes) {
@@ -216,7 +205,7 @@ function onCanvasClick(event) {
     window.location.href = "controller?x=" + x + "&y=" + y + "&r=" + r;
 }
 
-// canvas pixels back to math coordinates, rounded to 3 decimals
+// canvas pixels back to math coordinates
 function toMathX(pixelX) {
     return Math.round((pixelX - CENTER) / SCALE * 1000) / 1000;
 }

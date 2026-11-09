@@ -138,9 +138,7 @@ function drawPoints() {
 }
 
 
-// user actions
 
-// only one R can be ticked at a time
 function onRChange(changedBox) {
     if (changedBox.checked) {
         for (const box of rBoxes) {
@@ -207,7 +205,7 @@ function onCanvasClick(event) {
     window.location.href = "controller?x=" + x + "&y=" + y + "&r=" + r;
 }
 
-// canvas pixels back to math coordinates, rounded to 3 decimals
+// canvas pixels back to math coordinates
 function toMathX(pixelX) {
     return Math.round((pixelX - CENTER) / SCALE * 1000) / 1000;
 }
