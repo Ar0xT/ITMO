@@ -1,0 +1,33 @@
+body {
+    font-family: sans-serif; max-width: 640px; margin: 0 auto; padding: 16px;
+}
+header {
+    font-weight: bold; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid #ccc;
+}
+form {
+    display: flex; flex-direction: column; gap: 10px;
+}
+fieldset label {
+    margin-right: 12px;
+}
+button {
+    padding: 8px; cursor: pointer;
+}
+canvas {
+    display: block; margin: 16px auto; border: 1px solid #ccc; max-width: 100%; height: auto;
+}
+table {
+    width: 100%; border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc; padding: 4px 8px; text-align: center;
+}
+.error {
+    color: #c00; min-height: 1.2em;
+}
+.hit {
+    color: green;
+}
+.miss {
+    color: red;
+}

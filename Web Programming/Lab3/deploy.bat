@@ -1,0 +1,1 @@
+cp target/lab3.war ./wildfly/standalone/deployments

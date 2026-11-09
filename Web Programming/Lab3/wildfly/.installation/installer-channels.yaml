@@ -1,0 +1,9 @@
+---
+schemaVersion: "2.1.0"
+name: "wildfly"
+manifest:
+  maven:
+    groupId: "org.wildfly.channels"
+    artifactId: "wildfly"
+    version: "42.0.0.Final"
+resolve-if-no-stream: "none"
